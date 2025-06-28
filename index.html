@@ -203,7 +203,7 @@
                             </div>
                             <div>
                                 <label class="font-semibold text-lg">簡報主題</label>
-                                <input id="agent-topic" type="text" value="導入 AI 輔助診斷系統的效益與挑戰" class="form-input w-full mt-1 p-3 border rounded-md">
+                                <input id="agent-topic" type="text" placeholder="請輸入簡報主題，例如：導入 AI 輔助診斷系統" class="form-input w-full mt-1 p-3 border rounded-md">
                             </div>
                             <hr class="my-6 !mt-6 !mb-6 border-gray-200">
                              <div>
@@ -351,7 +351,7 @@
 首選敘事風格: ${agentNarrative}`;
 
                  const userPrompt = `【需求診斷】
-- 主題: ${agentTopic}
+- 主題: ${agentTopic || '(未指定)'}
 - 長度: ${agentLength}
 - 目標受眾: ${agentAudience || '(未指定)'}
 - 語氣風格: ${agentTone}
