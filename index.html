@@ -630,4 +630,47 @@
                 }
             };
 
-            if (start
+            if (startSimBtn) {
+                 startSimBtn.addEventListener('click', runSimulation);
+            }
+
+            if (copyAgentBtn) {
+                copyAgentBtn.addEventListener('click', () => {
+                    let fullOutput = `【Agent 協作成品】\n主題：${topicInput.value.trim()}\n\n`;
+                    const agentNames = ['資料蒐集 Agent', 'Content Agent', 'Design Agent', 'QA Agent'];
+
+                    for (let i = 1; i <= 4; i++) {
+                        const outputDiv = document.getElementById(`agent-output-${i}`);
+                        const outputText = outputDiv.querySelector('pre')?.innerText || '';
+                        fullOutput += `--- [ ${agentNames[i - 1]} ] ---\n\n${outputText}\n\n`;
+                    }
+
+                    const textarea = document.createElement('textarea');
+                    textarea.value = fullOutput.trim();
+                    textarea.style.position = 'fixed';
+                    textarea.style.left = '-9999px';
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    try {
+                        document.execCommand('copy');
+                        const btnSpan = copyAgentBtn.querySelector('span');
+                        if (btnSpan) btnSpan.textContent = '已複製！';
+                    } catch (err) {
+                        const btnSpan = copyAgentBtn.querySelector('span');
+                        if (btnSpan) btnSpan.textContent = '複製失敗';
+                        console.error('複製失敗', err);
+                    }
+                    document.body.removeChild(textarea);
+
+                    setTimeout(() => {
+                        const btnSpan = copyAgentBtn.querySelector('span');
+                        if (btnSpan) btnSpan.textContent = '複製成果';
+                    }, 2000);
+                });
+            }
+
+            generateAgentPrompts();
+        });
+    </script>
+</body>
+</html>
