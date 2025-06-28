@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>進階 Prompt — 多代理人 Agent 應用</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .aspect-container {
+            position: relative;
+            width: 100%;
+            max-width: 1280px;
+            margin: auto;
+        }
+        .content-wrapper {
+             background: radial-gradient(circle at top left, rgba(30, 41, 59, 1) 0%, rgba(15, 23, 42, 1) 40%, rgba(1, 4, 9, 1) 100%);
+        }
+        /* 為表格行添加底部邊框 */
+        .custom-table tbody tr {
+            border-bottom: 1px solid rgb(51 65 85); /* border-slate-700 */
+        }
+        .custom-table tbody tr:last-child {
+            border-bottom: none;
+        }
+        /* Loading spinner animation */
+        .loader {
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #3498db;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-slate-950 flex items-center justify-center min-h-screen p-4 sm:p-6 md:p-8">
+
+    <div class="aspect-container">
+        <div class="content-wrapper w-full shadow-2xl rounded-2xl p-8 md:p-12 lg:p-16">
+            
+            <!-- Header Section -->
+            <header class="text-center mb-10 md:mb-12">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-wider">
+                    進階 Prompt：多代理人 Agent
+                </h1>
+            </header>
+
+            <!-- Main Content: Table and Interactive App -->
+            <main class="flex flex-col items-center space-y-12">
+                
+                <!-- Original Table Section -->
+                <div class="space-y-6 w-full max-w-5xl">
+                    <h2 class="text-2xl md:text-3xl font-semibold text-cyan-400 mb-4 text-center">執行流程 & 核心任務</h2>
+                    <div class="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700 overflow-hidden">
+                        <table class="w-full text-left text-lg custom-table">
+                            <thead class="bg-slate-900/70">
+                                <tr>
+                                    <th class="p-5 font-semibold text-white tracking-wider">流程</th>
+                                    <th class="p-5 font-semibold text-white tracking-wider">代理人</th>
+                                    <th class="p-5 font-semibold text-white tracking-wider">核心任務</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-white">
+                                <tr class="hover:bg-slate-800/60 transition-colors duration-300">
+                                    <td class="p-5 align-top"><span class="bg-cyan-500/10 text-cyan-400 font-bold py-1 px-2 rounded-full text-sm mr-2">①</span> 需求釐清</td>
+                                    <td class="p-5 align-top font-medium">資料蒐集 Agent</td>
+                                    <td class="p-5 align-top">與使用者對話，釐清 2-3 個關鍵問題，並搜尋最新數據/文獻 (APA7)。</td>
+                                </tr>
+                                <tr class="hover:bg-slate-800/60 transition-colors duration-300">
+                                    <td class="p-5 align-top"><span class="bg-fuchsia-500/10 text-fuchsia-400 font-bold py-1 px-2 rounded-full text-sm mr-2">②</span> 架構撰寫</td>
+                                    <td class="p-5 align-top font-medium">Content Agent</td>
+                                    <td class="p-5 align-top">依據需求建立簡報大綱，並填入各頁面 3 行核心重點。</td>
+                                </tr>
+                                <tr class="hover:bg-slate-800/60 transition-colors duration-300">
+                                    <td class="p-5 align-top"><span class="bg-emerald-500/10 text-emerald-400 font-bold py-1 px-2 rounded-full text-sm mr-2">③</span> 視覺腳本</td>
+                                    <td class="p-5 align-top font-medium">Design Agent</td>
+                                    <td class="p-5 align-top">建議適合主題的圖片描述與整體配色。</td>
+                                </tr>
+                                <tr class="hover:bg-slate-800/60 transition-colors duration-300">
+                                    <td class="p-5 align-top"><span class="bg-amber-500/10 text-amber-400 font-bold py-1 px-2 rounded-full text-sm mr-2">④</span> 品質整合</td>
+                                    <td class="p-5 align-top font-medium">QA Agent</td>
+                                    <td class="p-5 align-top">檢查字數、架構與引用格式，若不符則自動回修。</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Gemini API Interactive Section -->
+                <div class="w-full max-w-5xl mt-8">
+                    <div class="bg-slate-900/50 border border-slate-700 rounded-2xl p-6 md:p-8">
+                        <h3 class="text-2xl font-bold text-center text-white mb-2">✨ 體驗 Agent 協作流程</h3>
+                        <p class="text-slate-400 text-center mb-6">請輸入您想生成的主題，AI 將模擬四個代理人為您產出內容。</p>
+                        
+                        <div class="flex flex-col sm:flex-row gap-4 mb-6">
+                            <input type="text" id="topicInput" placeholder="例如：為國中生製作一份關於光合作用的教材" class="flex-grow bg-slate-800 border border-slate-600 text-white rounded-lg px-4 py-3 focus:ring-2 focus:ring-cyan-500 focus:outline-none transition">
+                            <button id="startButton" class="bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 flex items-center justify-center disabled:bg-slate-500">
+                                <span id="buttonText">開始執行</span>
+                                <div id="buttonLoader" class="loader hidden ml-2"></div>
+                            </button>
+                        </div>
+                        
+                        <div id="results" class="space-y-4"></div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <script>
+        const startButton = document.getElementById('startButton');
+        const topicInput = document.getElementById('topicInput');
+        const resultsDiv = document.getElementById('results');
+        const buttonText = document.getElementById('buttonText');
+        const buttonLoader = document.getElementById('buttonLoader');
+
+        const apiKey = ""; // API Key is handled by the environment
+
+        // Helper to call Gemini API
+        async function callGemini(prompt) {
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+            const payload = {
+                contents: [{ role: "user", parts: [{ text: prompt }] }],
+                generationConfig: {
+                    temperature: 0.7,
+                    topP: 0.9,
+                    topK: 40,
+                }
+            };
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`API call failed with status: ${response.status}`);
+                }
+
+                const result = await response.json();
+
+                if (result.candidates && result.candidates.length > 0) {
+                    return result.candidates[0].content.parts[0].text;
+                } else {
+                    return "無法從 API 獲取有效回應。";
+                }
+            } catch (error) {
+                console.error("Gemini API Error:", error);
+                return `API 呼叫失敗: ${error.message}`;
+            }
+        }
+
+        // Helper to render results
+        function renderResult(agentName, content, colorClass) {
+            const resultElement = document.createElement('div');
+            resultElement.className = `bg-slate-800/70 border-l-4 ${colorClass} p-4 rounded-r-lg`;
+            
+            const agentTitle = document.createElement('h4');
+            agentTitle.className = 'font-bold text-lg text-white mb-2';
+            agentTitle.textContent = agentName;
+
+            const contentP = document.createElement('p');
+            contentP.className = 'text-slate-300 whitespace-pre-wrap';
+            contentP.textContent = content;
+            
+            resultElement.appendChild(agentTitle);
+            resultElement.appendChild(contentP);
+            
+            // Animate entrance
+            resultElement.style.opacity = '0';
+            resultElement.style.transform = 'translateY(20px)';
+            resultsDiv.appendChild(resultElement);
+            requestAnimationFrame(() => {
+                resultElement.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                resultElement.style.opacity = '1';
+                resultElement.style.transform = 'translateY(0)';
+            });
+        }
+        
+        function showLoader(agentName, colorClass) {
+             renderResult(`${agentName} (思考中...)`, ' ', colorClass);
+             const lastResult = resultsDiv.lastElementChild;
+             const p = lastResult.querySelector('p');
+             p.innerHTML = '<div class="loader"></div>';
+             return lastResult;
+        }
+
+        function updateResult(element, content) {
+            const p = element.querySelector('p');
+            p.innerHTML = ''; // Clear loader
+            p.textContent = content;
+        }
+
+
+        startButton.addEventListener('click', async () => {
+            const topic = topicInput.value.trim();
+            if (!topic) {
+                alert("請先輸入主題！");
+                return;
+            }
+
+            // Disable button and show loader
+            startButton.disabled = true;
+            buttonText.textContent = '執行中...';
+            buttonLoader.classList.remove('hidden');
+            resultsDiv.innerHTML = '';
+
+            let generatedContent = { topic };
+
+            try {
+                // Agent 1: 資料蒐集
+                let loader1 = showLoader('① 資料蒐集 Agent', 'border-cyan-500');
+                const prompt1 = `你是一位專業的資料蒐集員。針對主題：「${topic}」，請提出 2 個能幫助釐清需求的關鍵問題，並提供 3 個相關的關鍵字以供後續搜尋。`;
+                const result1 = await callGemini(prompt1);
+                updateResult(loader1, result1);
+                generatedContent.clarifications = result1;
+
+                // Agent 2: 架構撰寫
+                let loader2 = showLoader('② 架構撰寫 Agent', 'border-fuchsia-500');
+                const prompt2 = `你是一位經驗豐富的內容架構師。基於主題：「${topic}」，以及初步的釐清資料：「${generatedContent.clarifications}」。請為此主題設計一個簡潔的三段式內容大綱。`;
+                const result2 = await callGemini(prompt2);
+                updateResult(loader2, result2);
+                generatedContent.outline = result2;
+
+                // Agent 3: 視覺腳本
+                let loader3 = showLoader('③ 視覺腳本 Agent', 'border-emerald-500');
+                const prompt3 = `你是一位創意視覺設計師。根據以下內容大綱：「${generatedContent.outline}」，請為這個主題建議一個合適的色彩搭配（提供 3 個 Hex 色碼），並為每一段大綱發想一個具體的視覺畫面描述。`;
+                const result3 = await callGemini(prompt3);
+                updateResult(loader3, result3);
+                generatedContent.visuals = result3;
+
+                // Agent 4: 品質整合
+                let loader4 = showLoader('④ 品質整合 Agent', 'border-amber-500');
+                const prompt4 = `你是一位嚴謹的品質保證專家。請審閱以下全部產出：\n\n主題：「${topic}」\n內容大綱：「${generatedContent.outline}」\n視覺建議：「${generatedContent.visuals}」\n\n請以條列式提供 2-3 點具體的整合與優化建議，確保最終成品的一致性與高品質。`;
+                const result4 = await callGemini(prompt4);
+                updateResult(loader4, result4);
+
+            } catch (error) {
+                console.error("Workflow Error:", error);
+                renderResult("錯誤", `工作流程中發生錯誤: ${error.message}`, "border-red-500");
+            } finally {
+                // Re-enable button
+                startButton.disabled = false;
+                buttonText.textContent = '開始執行';
+                buttonLoader.classList.add('hidden');
+            }
+        });
+    </script>
+
+</body>
+</html>
