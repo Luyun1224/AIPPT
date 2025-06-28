@@ -344,10 +344,14 @@
                     <div class="bg-white p-6 sm:p-8 rounded-xl shadow-md border border-gray-200">
                          <h3 class="text-2xl font-bold text-blue-900 mb-2 text-center">✨ 體驗 Agent 協作流程</h3>
                          <p class="text-center text-blue-800 mb-6">請輸入您想生成的主題，AI 將模擬四個代理人為您產出內容。</p>
-                         <div class="max-w-2xl mx-auto">
+                         <div class="max-w-3xl mx-auto">
                             <div class="flex flex-col sm:flex-row gap-2">
                                 <input id="agent-sim-topic" type="text" placeholder="例如：為國中生製作一份關於光合作用的教材" class="form-input flex-grow w-full p-3 border rounded-md">
                                 <button id="agent-sim-start-btn" class="w-full sm:w-auto bg-blue-800 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed">開始執行</button>
+                                <button id="copy-agent-output-btn" class="hidden w-full sm:w-auto bg-green-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
+                                    <span>複製成果</span>
+                                </button>
                             </div>
                          </div>
                     </div>
@@ -509,10 +513,12 @@
             const startSimBtn = document.getElementById('agent-sim-start-btn');
             const processDisplay = document.getElementById('agent-process-display');
             const topicInput = document.getElementById('agent-sim-topic');
+            const copyAgentBtn = document.getElementById('copy-agent-output-btn');
 
             const resetSimUI = () => {
                 processDisplay.classList.add('hidden');
                 document.getElementById('agent-final-message').classList.add('hidden');
+                copyAgentBtn.classList.add('hidden');
                 
                 for (let i = 1; i <= 4; i++) {
                     const stepDiv = document.getElementById(`agent-step-${i}`);
@@ -538,32 +544,30 @@
                 }
             };
             
-            // 呼叫 Gemini API 的通用函式
-            async function callGemini(prompt) {
-                let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
-                const payload = { contents: chatHistory };
-                const apiKey = ""; 
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+            function offlineAgentGenerator(agentId, topic) {
+                const thinkTime = 1000 + Math.random() * 500;
                 
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        let content = '';
+                        switch (agentId) {
+                            case 1:
+                                content = `好的，身為一位專業的資料蒐集員，針對「${topic}」這個主題，為了更精確地了解您的需求，以下是 2 個關鍵問題：\n\n**釐清需求的關鍵問題：**\n\n1.  **您需要關於「${topic}」的資訊，主要目的是什麼？**\n    * *說明：* 了解目的有助於確定資料的深度與廣度（例如：基礎科普 vs. 專業報告 vs. 商業提案）。\n\n2.  **關於「${topic}」，您特別想了解哪些面向或層次？**\n    * *說明：* 明確感興趣的具體內容能大幅縮小搜尋範圍，提高效率。\n\n**相關的關鍵字 (供後續搜尋使用)：**\n\n1.  **${topic} 核心概念**\n2.  **${topic} 應用案例**\n3.  **${topic} 未來趨勢**\n\n希望這些問題和關鍵字能幫助我們更精確地鎖定您需要的資料。`;
+                                break;
+                            case 2:
+                                content = `好的，身為內容架構師，基於「${topic}」主題及初步釐清資料，這是一個簡潔的三段式內容大綱設計，旨在涵蓋核心要素：\n\n**內容大綱：${topic}**\n\n1.  **第一部分：核心概念解析 (What & Why)**\n    * **核心內容：** 闡述「${topic}」的基礎定義與重要性。說明它解決了什麼問題，以及為何它在當前情境下至關重要。這部分為觀眾建立共同的理解基礎。\n\n2.  **第二部分：方法與實踐 (How)**\n    * **核心內容：** 詳細介紹實現「${topic}」的具體方法、流程或關鍵步驟。如果適用，可以引用 1-2 個成功案例來具象化執行過程，展示其可行性與成效。\n\n3.  **第三部分：影響與展望 (Impact & Future)**\n    * **核心內容：** 探討「${topic}」帶來的影響與價值，並展望未來的發展趨勢或下一步行動建議。這部分旨在啟發思考，並呼籲觀眾採取行動。\n\n這個三段式大綱從「是什麼/為何重要」入門，深入到「如何做到」，最後擴展到「有何影響/未來如何」，結構清晰，邏輯連貫。`;
+                                break;
+                            case 3:
+                                content = `好的，身為創意視覺設計師，我非常樂意根據「${topic}」的內容大綱，為這個主題設計一套視覺方案。\n\n**建議色彩搭配 (3 個 Hex 色碼):**\n\n1.  **#2C5282** (沉穩藍): 代表專業、信任與深度。\n2.  **#F6E05E** (活力黃): 代表創新、能量與亮點。\n3.  **#E2E8F0** (中性灰): 用於背景與輔助文字，確保內容清晰易讀。\n\n**視覺畫面描述 (依據內容大綱段落):**\n\n1.  **對應第一段 (核心概念解析):**\n    * **視覺概念：** 使用抽象的幾何圖形或高品質的示意圖，來視覺化「${topic}」的核心概念，營造專業且引人入勝的開場。\n\n2.  **對應第二段 (方法與實踐):**\n    * **視覺概念：** 運用清晰的流程圖、時間軸或圖標來拆解步驟。案例部分可使用真實照片或引言，增加說服力。\n\n3.  **對應第三段 (影響與展望):**\n    * **視覺概念：** 使用數據圖表（如長條圖、趨勢線）來量化影響力。展望未來部分，可以使用富有未來感的圖像或向上箭頭等象徵性圖示。`;
+                                break;
+                            case 4:
+                                content = `好的，身為嚴謹的品質保證專家，我已詳細審閱了「${topic}」的內容大綱和視覺建議。為了確保最終成品達到一致性與高品質，我提出以下 2 點整合與優化建議：\n\n1.  **確保內容與視覺的緊密對齊：**\n    * 在製作投影片時，請嚴格確保第二部分「方法與實踐」中的每一個步驟，都有一張對應的、清晰的視覺化圖表（流程圖或圖標）。避免一張投影片塞入過多文字，應讓視覺設計輔助說明，而非僅僅是裝飾。\n\n2.  **維持品牌調性的一致性：**\n    * 從頭到尾嚴格遵守建議的色彩搭配（#2C5282, #F6E05E, #E2E8F0）與字體規範。所有圖示與圖表都應採用統一的設計風格（例如：扁平化設計），以建立專業且連貫的視覺形象。\n\n透過以上兩點的嚴謹執行，可以確保這份關於「${topic}」的簡報在內容準確性與視覺呈現上都達到高品質標準。`;
+                                break;
+                        }
+                        resolve(content);
+                    }, thinkTime);
                 });
-
-                if (!response.ok) {
-                    const errorBody = await response.text();
-                    throw new Error(`API request failed with status ${response.status}: ${errorBody}`);
-                }
-                const result = await response.json();
-                if (result.candidates && result.candidates.length > 0 && result.candidates[0].content.parts[0].text) {
-                    return result.candidates[0].content.parts[0].text;
-                } else {
-                    console.warn("API response structure unexpected:", result);
-                    throw new Error("API did not return valid content.");
-                }
             }
-
 
             const runSimulation = async () => {
                 const topic = topicInput.value.trim();
@@ -581,16 +585,7 @@
                 processDisplay.classList.remove('hidden');
                 startSimBtn.disabled = true;
                 startSimBtn.textContent = '處理中...';
-
-                let collaborationContext = `初始主題: ${topic}\n\n`;
                 
-                const agentPrompts = {
-                    1: (topic) => `作為一位專業的資料蒐集員，針對「${topic}」這個主題，為了更精確地了解需求，請識別並提出 2-3 個需要優先釐清的核心問題，並提供 3 個相關的搜尋關鍵字。`,
-                    2: (context) => `這是我們目前的進度：\n\n${context}\n\n作為內容架構師，請基於上述的初步釐清資料，為這個主題設計一個簡潔的三段式內容大綱，並闡述每個段落的核心內容。`,
-                    3: (context) => `這是我們目前的進度：\n\n${context}\n\n作為創意視覺設計師，請根據上述內容大綱，為這個主題設計一套視覺方案，包含建議的色彩搭配 (3 個 Hex 色碼) 和每一段的具體視覺畫面描述。`,
-                    4: (context) => `這是我們目前的進度：\n\n${context}\n\n作為嚴謹的品質保證專家，請詳細審閱上述所有內容，提出 2-3 點具體的整合與優化建議，以確保最終成品達到一致性與高品質。`
-                };
-
                 const agentSteps = [
                     { id: 1, name: '資料蒐集 Agent', color: 'blue' },
                     { id: 2, name: 'Content Agent', color: 'purple' },
@@ -605,7 +600,6 @@
                         const text = stepDiv.querySelector('.status-text');
                         const outputDiv = document.getElementById(`agent-output-${step.id}`);
                         
-                        // 1. 更新 UI 為「思考中」
                         text.textContent = `${step.name} (思考中...)`;
                         text.className = `status-text font-medium text-${step.color}-800`;
                         dot.innerHTML = `<svg class="animate-spin-slow w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>`;
@@ -614,23 +608,17 @@
                         outputDiv.style.display = 'block';
                         outputDiv.innerHTML = `<pre class="font-sans animate-pulse">AI 正在生成內容...</pre>`;
                         
-                        // 2. 準備並呼叫 API
-                        const prompt = agentPrompts[step.id](step.id === 1 ? topic : collaborationContext);
-                        const resultText = await callGemini(prompt);
+                        const resultText = await offlineAgentGenerator(step.id, topic);
                         
-                        // 3. 更新 UI 為「完成」並顯示內容
                         dot.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-white"><path d="M20 6 9 17l-5-5"></path></svg>`;
                         text.textContent = `${step.name}：完成`;
                         outputDiv.innerHTML = `<pre class="font-sans">${resultText}</pre>`;
                         outputDiv.querySelector('pre').classList.remove('animate-pulse');
-
-                        // 4. 累積上下文供下一個 Agent 使用
-                        collaborationContext += `\n\n--- Agent ${step.id} (${step.name}) 產出 ---\n${resultText}`;
                     }
                     document.getElementById('agent-final-message').classList.remove('hidden');
+                    copyAgentBtn.classList.remove('hidden');
                 } catch (error) {
                     console.error("執行 Agent 流程時發生錯誤:", error);
-                    // 在出錯的步驟顯示錯誤訊息
                     const currentStepId = agentSteps.find(s => document.getElementById(`agent-step-${s.id}`).querySelector('.status-text').textContent.includes('思考中'))?.id || agentSteps[agentSteps.length - 1].id;
                     const errorOutputDiv = document.getElementById(`agent-output-${currentStepId}`);
                     if (errorOutputDiv) {
@@ -642,12 +630,4 @@
                 }
             };
 
-            if (startSimBtn) {
-                 startSimBtn.addEventListener('click', runSimulation);
-            }
-
-            generateAgentPrompts();
-        });
-    </script>
-</body>
-</html>
+            if (start
