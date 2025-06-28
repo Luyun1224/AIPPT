@@ -11,29 +11,24 @@
     <style>
         body {
             font-family: 'Noto Sans TC', sans-serif;
+            background-color: #F8F7F4; /* 米白底色 */
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
-        .aspect-container {
-            position: relative;
-            width: 100%;
-            max-width: 1280px;
-            margin: auto;
-        }
         .content-wrapper {
-             background: radial-gradient(circle at top left, rgba(30, 41, 59, 1) 0%, rgba(15, 23, 42, 1) 40%, rgba(1, 4, 9, 1) 100%);
+             background-color: #FFFFFF; /* 內容區塊為白色 */
         }
         /* 為表格行添加底部邊框 */
         .custom-table tbody tr {
-            border-bottom: 1px solid rgb(51 65 85); /* border-slate-700 */
+            border-bottom: 1px solid #E5E7EB; /* border-gray-200 */
         }
         .custom-table tbody tr:last-child {
             border-bottom: none;
         }
         /* Loading spinner animation */
         .loader {
-            border: 2px solid #f3f3f3;
-            border-top: 2px solid #3498db;
+            border: 2px solid rgba(0,0,0,0.1);
+            border-top: 2px solid #3D405B; /* 深藍色 spinner */
             border-radius: 50%;
             width: 16px;
             height: 16px;
@@ -45,14 +40,14 @@
         }
     </style>
 </head>
-<body class="bg-slate-950 flex items-center justify-center min-h-screen p-4 sm:p-6 md:p-8">
+<body class="flex items-center justify-center min-h-screen p-4 sm:p-6 md:p-8">
 
     <div class="aspect-container">
-        <div class="content-wrapper w-full shadow-2xl rounded-2xl p-8 md:p-12 lg:p-16">
+        <div class="content-wrapper w-full shadow-lg rounded-2xl p-8 md:p-12 lg:p-16">
             
             <!-- Header Section -->
             <header class="text-center mb-10 md:mb-12">
-                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-wider">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-[#263462] tracking-wider">
                     進階 Prompt：多代理人 Agent
                 </h1>
             </header>
@@ -62,36 +57,36 @@
                 
                 <!-- Original Table Section -->
                 <div class="space-y-6 w-full max-w-5xl">
-                    <h2 class="text-2xl md:text-3xl font-semibold text-cyan-400 mb-4 text-center">執行流程 & 核心任務</h2>
-                    <div class="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700 overflow-hidden">
+                    <h2 class="text-2xl md:text-3xl font-semibold text-[#3D405B] mb-4 text-center">執行流程 & 核心任務</h2>
+                    <div class="bg-white/50 backdrop-blur-sm rounded-xl border border-gray-200 overflow-hidden">
                         <table class="w-full text-left text-lg custom-table">
-                            <thead class="bg-slate-900/70">
+                            <thead class="bg-gray-50">
                                 <tr>
-                                    <th class="p-5 font-semibold text-white tracking-wider">流程</th>
-                                    <th class="p-5 font-semibold text-white tracking-wider">代理人</th>
-                                    <th class="p-5 font-semibold text-white tracking-wider">核心任務</th>
+                                    <th class="p-5 font-semibold text-gray-700 tracking-wider">流程</th>
+                                    <th class="p-5 font-semibold text-gray-700 tracking-wider">代理人</th>
+                                    <th class="p-5 font-semibold text-gray-700 tracking-wider">核心任務</th>
                                 </tr>
                             </thead>
-                            <tbody class="text-white">
-                                <tr class="hover:bg-slate-800/60 transition-colors duration-300">
-                                    <td class="p-5 align-top"><span class="bg-cyan-500/10 text-cyan-400 font-bold py-1 px-2 rounded-full text-sm mr-2">①</span> 需求釐清</td>
-                                    <td class="p-5 align-top font-medium">資料蒐集 Agent</td>
-                                    <td class="p-5 align-top">與使用者對話，釐清 2-3 個關鍵問題，並搜尋最新數據/文獻 (APA7)。</td>
+                            <tbody class="text-gray-800">
+                                <tr class="hover:bg-gray-50/60 transition-colors duration-300">
+                                    <td class="p-5 align-top font-medium"><span class="bg-indigo-100 text-indigo-700 font-bold py-1 px-2.5 rounded-full text-sm mr-3">①</span>需求釐清</td>
+                                    <td class="p-5 align-top">資料蒐集 Agent</td>
+                                    <td class="p-5 align-top text-gray-600">與使用者對話，釐清 2-3 個關鍵問題，並搜尋最新數據/文獻 (APA7)。</td>
                                 </tr>
-                                <tr class="hover:bg-slate-800/60 transition-colors duration-300">
-                                    <td class="p-5 align-top"><span class="bg-fuchsia-500/10 text-fuchsia-400 font-bold py-1 px-2 rounded-full text-sm mr-2">②</span> 架構撰寫</td>
-                                    <td class="p-5 align-top font-medium">Content Agent</td>
-                                    <td class="p-5 align-top">依據需求建立簡報大綱，並填入各頁面 3 行核心重點。</td>
+                                <tr class="hover:bg-gray-50/60 transition-colors duration-300">
+                                    <td class="p-5 align-top font-medium"><span class="bg-teal-100 text-teal-700 font-bold py-1 px-2.5 rounded-full text-sm mr-3">②</span>架構撰寫</td>
+                                    <td class="p-5 align-top">Content Agent</td>
+                                    <td class="p-5 align-top text-gray-600">依據需求建立簡報大綱，並填入各頁面 3 行核心重點。</td>
                                 </tr>
-                                <tr class="hover:bg-slate-800/60 transition-colors duration-300">
-                                    <td class="p-5 align-top"><span class="bg-emerald-500/10 text-emerald-400 font-bold py-1 px-2 rounded-full text-sm mr-2">③</span> 視覺腳本</td>
-                                    <td class="p-5 align-top font-medium">Design Agent</td>
-                                    <td class="p-5 align-top">建議適合主題的圖片描述與整體配色。</td>
+                                <tr class="hover:bg-gray-50/60 transition-colors duration-300">
+                                    <td class="p-5 align-top font-medium"><span class="bg-purple-100 text-purple-700 font-bold py-1 px-2.5 rounded-full text-sm mr-3">③</span>視覺腳本</td>
+                                    <td class="p-5 align-top">Design Agent</td>
+                                    <td class="p-5 align-top text-gray-600">建議適合主題的圖片描述與整體配色。</td>
                                 </tr>
-                                <tr class="hover:bg-slate-800/60 transition-colors duration-300">
-                                    <td class="p-5 align-top"><span class="bg-amber-500/10 text-amber-400 font-bold py-1 px-2 rounded-full text-sm mr-2">④</span> 品質整合</td>
-                                    <td class="p-5 align-top font-medium">QA Agent</td>
-                                    <td class="p-5 align-top">檢查字數、架構與引用格式，若不符則自動回修。</td>
+                                <tr class="hover:bg-gray-50/60 transition-colors duration-300">
+                                    <td class="p-5 align-top font-medium"><span class="bg-slate-200 text-slate-700 font-bold py-1 px-2.5 rounded-full text-sm mr-3">④</span>品質整合</td>
+                                    <td class="p-5 align-top">QA Agent</td>
+                                    <td class="p-5 align-top text-gray-600">檢查字數、架構與引用格式，若不符則自動回修。</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -100,13 +95,13 @@
 
                 <!-- Gemini API Interactive Section -->
                 <div class="w-full max-w-5xl mt-8">
-                    <div class="bg-slate-900/50 border border-slate-700 rounded-2xl p-6 md:p-8">
-                        <h3 class="text-2xl font-bold text-center text-white mb-2">✨ 體驗 Agent 協作流程</h3>
-                        <p class="text-slate-400 text-center mb-6">請輸入您想生成的主題，AI 將模擬四個代理人為您產出內容。</p>
+                    <div class="bg-gray-50/70 border border-gray-200 rounded-2xl p-6 md:p-8">
+                        <h3 class="text-2xl font-bold text-center text-[#263462] mb-2">✨ 體驗 Agent 協作流程</h3>
+                        <p class="text-gray-600 text-center mb-6">請輸入您想生成的主題，AI 將模擬四個代理人為您產出內容。</p>
                         
                         <div class="flex flex-col sm:flex-row gap-4 mb-6">
-                            <input type="text" id="topicInput" placeholder="例如：為國中生製作一份關於光合作用的教材" class="flex-grow bg-slate-800 border border-slate-600 text-white rounded-lg px-4 py-3 focus:ring-2 focus:ring-cyan-500 focus:outline-none transition">
-                            <button id="startButton" class="bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 flex items-center justify-center disabled:bg-slate-500">
+                            <input type="text" id="topicInput" placeholder="例如：為國中生製作一份關於光合作用的教材" class="flex-grow bg-white border border-gray-300 text-gray-800 rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition">
+                            <button id="startButton" class="bg-[#263462] hover:bg-[#3D405B] text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 flex items-center justify-center disabled:bg-slate-400">
                                 <span id="buttonText">開始執行</span>
                                 <div id="buttonLoader" class="loader hidden ml-2"></div>
                             </button>
@@ -168,14 +163,14 @@
         // Helper to render results
         function renderResult(agentName, content, colorClass) {
             const resultElement = document.createElement('div');
-            resultElement.className = `bg-slate-800/70 border-l-4 ${colorClass} p-4 rounded-r-lg`;
+            resultElement.className = `bg-white border-l-4 ${colorClass} p-4 rounded-r-lg shadow-sm`;
             
             const agentTitle = document.createElement('h4');
-            agentTitle.className = 'font-bold text-lg text-white mb-2';
+            agentTitle.className = 'font-bold text-lg text-gray-800 mb-2';
             agentTitle.textContent = agentName;
 
             const contentP = document.createElement('p');
-            contentP.className = 'text-slate-300 whitespace-pre-wrap';
+            contentP.className = 'text-gray-600 whitespace-pre-wrap';
             contentP.textContent = content;
             
             resultElement.appendChild(agentTitle);
@@ -206,11 +201,19 @@
             p.textContent = content;
         }
 
-
         startButton.addEventListener('click', async () => {
             const topic = topicInput.value.trim();
             if (!topic) {
-                alert("請先輸入主題！");
+                // In-page custom alert
+                const existingAlert = document.getElementById('customAlert');
+                if(existingAlert) existingAlert.remove();
+                
+                const alertBox = document.createElement('div');
+                alertBox.id = 'customAlert';
+                alertBox.className = 'fixed top-5 right-5 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg shadow-lg z-50';
+                alertBox.textContent = '請先輸入主題！';
+                document.body.appendChild(alertBox);
+                setTimeout(() => alertBox.remove(), 3000);
                 return;
             }
 
@@ -224,28 +227,28 @@
 
             try {
                 // Agent 1: 資料蒐集
-                let loader1 = showLoader('① 資料蒐集 Agent', 'border-cyan-500');
+                let loader1 = showLoader('① 資料蒐集 Agent', 'border-indigo-500');
                 const prompt1 = `你是一位專業的資料蒐集員。針對主題：「${topic}」，請提出 2 個能幫助釐清需求的關鍵問題，並提供 3 個相關的關鍵字以供後續搜尋。`;
                 const result1 = await callGemini(prompt1);
                 updateResult(loader1, result1);
                 generatedContent.clarifications = result1;
 
                 // Agent 2: 架構撰寫
-                let loader2 = showLoader('② 架構撰寫 Agent', 'border-fuchsia-500');
+                let loader2 = showLoader('② 架構撰寫 Agent', 'border-teal-500');
                 const prompt2 = `你是一位經驗豐富的內容架構師。基於主題：「${topic}」，以及初步的釐清資料：「${generatedContent.clarifications}」。請為此主題設計一個簡潔的三段式內容大綱。`;
                 const result2 = await callGemini(prompt2);
                 updateResult(loader2, result2);
                 generatedContent.outline = result2;
 
                 // Agent 3: 視覺腳本
-                let loader3 = showLoader('③ 視覺腳本 Agent', 'border-emerald-500');
+                let loader3 = showLoader('③ 視覺腳本 Agent', 'border-purple-500');
                 const prompt3 = `你是一位創意視覺設計師。根據以下內容大綱：「${generatedContent.outline}」，請為這個主題建議一個合適的色彩搭配（提供 3 個 Hex 色碼），並為每一段大綱發想一個具體的視覺畫面描述。`;
                 const result3 = await callGemini(prompt3);
                 updateResult(loader3, result3);
                 generatedContent.visuals = result3;
 
                 // Agent 4: 品質整合
-                let loader4 = showLoader('④ 品質整合 Agent', 'border-amber-500');
+                let loader4 = showLoader('④ 品質整合 Agent', 'border-slate-500');
                 const prompt4 = `你是一位嚴謹的品質保證專家。請審閱以下全部產出：\n\n主題：「${topic}」\n內容大綱：「${generatedContent.outline}」\n視覺建議：「${generatedContent.visuals}」\n\n請以條列式提供 2-3 點具體的整合與優化建議，確保最終成品的一致性與高品質。`;
                 const result4 = await callGemini(prompt4);
                 updateResult(loader4, result4);
