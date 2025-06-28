@@ -62,14 +62,18 @@
             white-space: -o-pre-wrap;    /* Opera 7 */
             word-wrap: break-word;       /* Internet Explorer 5.5+ */
         }
-        .agent-output {
-            display: none;
-            margin-top: 0.75rem;
-            padding: 1rem;
-            background-color: rgba(239, 246, 255, 0.7); /* bg-blue-50/70 */
-            border-radius: 0.375rem; /* rounded-md */
-            border: 1px solid #bfdbfe; /* border-blue-200 */
+        #master-prompt-output {
+            background-color: #1E3A8A; /* 深藍色背景 */
+            color: #E0F2FE; /* 亮藍色文字 */
+            border: 1px solid #93C5FD;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            line-height: 1.7;
         }
+        #master-prompt-output strong {
+            color: #FBBF24; /* Amber 400 for highlights */
+        }
+
 
     </style>
 </head>
@@ -343,15 +347,11 @@
 
                     <div class="bg-white p-6 sm:p-8 rounded-xl shadow-md border border-gray-200">
                          <h3 class="text-2xl font-bold text-blue-900 mb-2 text-center">✨ 體驗 Agent 協作流程</h3>
-                         <p class="text-center text-blue-800 mb-6">請輸入您想生成的主題，AI 將模擬四個代理人為您產出內容。</p>
+                         <p class="text-center text-blue-800 mb-6">請輸入您想生成的主題，我們將為您產生一份可立即使用的「大師級 Prompt」！</p>
                          <div class="max-w-3xl mx-auto">
                             <div class="flex flex-col sm:flex-row gap-2">
                                 <input id="agent-sim-topic" type="text" placeholder="例如：為國中生製作一份關於光合作用的教材" class="form-input flex-grow w-full p-3 border rounded-md">
-                                <button id="agent-sim-start-btn" class="w-full sm:w-auto bg-blue-800 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed">開始執行</button>
-                                <button id="copy-agent-output-btn" class="hidden w-full sm:w-auto bg-green-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
-                                    <span>複製成果</span>
-                                </button>
+                                <button id="agent-sim-start-btn" class="w-full sm:w-auto bg-blue-800 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed">產生 Prompt</button>
                             </div>
                          </div>
                     </div>
@@ -359,30 +359,28 @@
                     <!-- Agent 執行流程顯示區 -->
                     <div id="agent-process-display" class="mt-8 bg-white p-6 sm:p-8 rounded-xl shadow-md border border-gray-200 hidden">
                         <!-- 流程步驟 -->
-                        <div id="agent-steps-container" class="space-y-4">
+                        <div id="agent-steps-container" class="space-y-4 mb-8">
+                            <p class="text-center font-semibold">正在模擬 Agent 團隊思考過程...</p>
                             <!-- Step 1 -->
-                            <div id="agent-step-1" class="border-b border-gray-200 pb-4">
+                            <div id="agent-step-1">
                                 <div class="flex items-center gap-4">
                                     <div class="status-dot w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-white font-bold text-lg flex-shrink-0">1</div>
                                     <div class="status-text text-gray-500 font-medium">資料蒐集 Agent：等待執行</div>
                                 </div>
-                                <div id="agent-output-1" class="agent-output"></div>
                             </div>
                             <!-- Step 2 -->
-                             <div id="agent-step-2" class="border-b border-gray-200 pb-4">
+                             <div id="agent-step-2">
                                 <div class="flex items-center gap-4">
                                     <div class="status-dot w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-white font-bold text-lg flex-shrink-0">2</div>
                                     <div class="status-text text-gray-500 font-medium">Content Agent：等待上一步驟完成</div>
                                 </div>
-                                <div id="agent-output-2" class="agent-output"></div>
                             </div>
                              <!-- Step 3 -->
-                            <div id="agent-step-3" class="border-b border-gray-200 pb-4">
+                            <div id="agent-step-3">
                                 <div class="flex items-center gap-4">
                                     <div class="status-dot w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-white font-bold text-lg flex-shrink-0">3</div>
                                     <div class="status-text text-gray-500 font-medium">Design Agent：等待上一步驟完成</div>
                                 </div>
-                                <div id="agent-output-3" class="agent-output"></div>
                             </div>
                              <!-- Step 4 -->
                             <div id="agent-step-4">
@@ -390,14 +388,20 @@
                                     <div class="status-dot w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-white font-bold text-lg flex-shrink-0">4</div>
                                     <div class="status-text text-gray-500 font-medium">QA Agent：等待上一步驟完成</div>
                                 </div>
-                                <div id="agent-output-4" class="agent-output"></div>
                             </div>
                         </div>
 
-                         <!-- Final Message -->
-                        <div id="agent-final-message" class="hidden pt-6 mt-6 border-t border-gray-200 text-center">
-                             <h4 class="text-2xl font-bold text-blue-900 mb-2">🎉 所有 Agent 協作完成！</h4>
-                             <p class="text-blue-800">請檢視以上由各位專家共同產出的內容。</p>
+                         <!-- Final Output -->
+                        <div id="agent-final-output" class="hidden pt-6 mt-6 border-t border-gray-200">
+                             <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-4">
+                                <h4 class="text-xl font-bold text-blue-900">🎉 Prompt 產生成功！</h4>
+                                <button id="copy-master-prompt-btn" class="w-full sm:w-auto bg-green-600 text-white font-bold py-2 px-5 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
+                                    <span>複製這份 Prompt</span>
+                                </button>
+                             </div>
+                             <p class="mb-4">您可以將下方這份「大師級 Prompt」完整複製，並貼到任何大型語言模型（如 ChatGPT, Gemini, Claude）中，以獲得高品質的簡報企劃書。</p>
+                             <pre id="master-prompt-output"></pre>
                         </div>
                     </div>
                 </section>
@@ -513,21 +517,19 @@
             const startSimBtn = document.getElementById('agent-sim-start-btn');
             const processDisplay = document.getElementById('agent-process-display');
             const topicInput = document.getElementById('agent-sim-topic');
-            const copyAgentBtn = document.getElementById('copy-agent-output-btn');
+            const copyMasterPromptBtn = document.getElementById('copy-master-prompt-btn');
+            const masterPromptOutput = document.getElementById('master-prompt-output');
+            const finalOutputContainer = document.getElementById('agent-final-output');
 
             const resetSimUI = () => {
                 processDisplay.classList.add('hidden');
-                document.getElementById('agent-final-message').classList.add('hidden');
-                copyAgentBtn.classList.add('hidden');
+                finalOutputContainer.classList.add('hidden');
+                masterPromptOutput.textContent = '';
                 
                 for (let i = 1; i <= 4; i++) {
                     const stepDiv = document.getElementById(`agent-step-${i}`);
                     const dot = stepDiv.querySelector('.status-dot');
                     const text = stepDiv.querySelector('.status-text');
-                    const outputDiv = document.getElementById(`agent-output-${i}`);
-
-                    outputDiv.style.display = 'none';
-                    outputDiv.innerHTML = '';
                     
                     dot.className = 'status-dot w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-white font-bold text-lg flex-shrink-0';
                     dot.innerHTML = i;
@@ -543,30 +545,39 @@
                     text.className = 'status-text text-gray-500 font-medium';
                 }
             };
-            
-            function offlineAgentGenerator(agentId, topic) {
-                const thinkTime = 1000 + Math.random() * 500;
-                
-                return new Promise(resolve => {
-                    setTimeout(() => {
-                        let content = '';
-                        switch (agentId) {
-                            case 1:
-                                content = `好的，身為一位專業的資料蒐集員，針對「${topic}」這個主題，為了更精確地了解您的需求，以下是 2 個關鍵問題：\n\n**釐清需求的關鍵問題：**\n\n1.  **您需要關於「${topic}」的資訊，主要目的是什麼？**\n    * *說明：* 了解目的有助於確定資料的深度與廣度（例如：基礎科普 vs. 專業報告 vs. 商業提案）。\n\n2.  **關於「${topic}」，您特別想了解哪些面向或層次？**\n    * *說明：* 明確感興趣的具體內容能大幅縮小搜尋範圍，提高效率。\n\n**相關的關鍵字 (供後續搜尋使用)：**\n\n1.  **${topic} 核心概念**\n2.  **${topic} 應用案例**\n3.  **${topic} 未來趨勢**\n\n希望這些問題和關鍵字能幫助我們更精確地鎖定您需要的資料。`;
-                                break;
-                            case 2:
-                                content = `好的，身為內容架構師，基於「${topic}」主題及初步釐清資料，這是一個簡潔的三段式內容大綱設計，旨在涵蓋核心要素：\n\n**內容大綱：${topic}**\n\n1.  **第一部分：核心概念解析 (What & Why)**\n    * **核心內容：** 闡述「${topic}」的基礎定義與重要性。說明它解決了什麼問題，以及為何它在當前情境下至關重要。這部分為觀眾建立共同的理解基礎。\n\n2.  **第二部分：方法與實踐 (How)**\n    * **核心內容：** 詳細介紹實現「${topic}」的具體方法、流程或關鍵步驟。如果適用，可以引用 1-2 個成功案例來具象化執行過程，展示其可行性與成效。\n\n3.  **第三部分：影響與展望 (Impact & Future)**\n    * **核心內容：** 探討「${topic}」帶來的影響與價值，並展望未來的發展趨勢或下一步行動建議。這部分旨在啟發思考，並呼籲觀眾採取行動。\n\n這個三段式大綱從「是什麼/為何重要」入門，深入到「如何做到」，最後擴展到「有何影響/未來如何」，結構清晰，邏輯連貫。`;
-                                break;
-                            case 3:
-                                content = `好的，身為創意視覺設計師，我非常樂意根據「${topic}」的內容大綱，為這個主題設計一套視覺方案。\n\n**建議色彩搭配 (3 個 Hex 色碼):**\n\n1.  **#2C5282** (沉穩藍): 代表專業、信任與深度。\n2.  **#F6E05E** (活力黃): 代表創新、能量與亮點。\n3.  **#E2E8F0** (中性灰): 用於背景與輔助文字，確保內容清晰易讀。\n\n**視覺畫面描述 (依據內容大綱段落):**\n\n1.  **對應第一段 (核心概念解析):**\n    * **視覺概念：** 使用抽象的幾何圖形或高品質的示意圖，來視覺化「${topic}」的核心概念，營造專業且引人入勝的開場。\n\n2.  **對應第二段 (方法與實踐):**\n    * **視覺概念：** 運用清晰的流程圖、時間軸或圖標來拆解步驟。案例部分可使用真實照片或引言，增加說服力。\n\n3.  **對應第三段 (影響與展望):**\n    * **視覺概念：** 使用數據圖表（如長條圖、趨勢線）來量化影響力。展望未來部分，可以使用富有未來感的圖像或向上箭頭等象徵性圖示。`;
-                                break;
-                            case 4:
-                                content = `好的，身為嚴謹的品質保證專家，我已詳細審閱了「${topic}」的內容大綱和視覺建議。為了確保最終成品達到一致性與高品質，我提出以下 2 點整合與優化建議：\n\n1.  **確保內容與視覺的緊密對齊：**\n    * 在製作投影片時，請嚴格確保第二部分「方法與實踐」中的每一個步驟，都有一張對應的、清晰的視覺化圖表（流程圖或圖標）。避免一張投影片塞入過多文字，應讓視覺設計輔助說明，而非僅僅是裝飾。\n\n2.  **維持品牌調性的一致性：**\n    * 從頭到尾嚴格遵守建議的色彩搭配（#2C5282, #F6E05E, #E2E8F0）與字體規範。所有圖示與圖表都應採用統一的設計風格（例如：扁平化設計），以建立專業且連貫的視覺形象。\n\n透過以上兩點的嚴謹執行，可以確保這份關於「${topic}」的簡報在內容準確性與視覺呈現上都達到高品質標準。`;
-                                break;
-                        }
-                        resolve(content);
-                    }, thinkTime);
-                });
+
+            function generateMasterPrompt(topic) {
+                return `# [必殺指令] 多代理人簡報企劃 Prompt
+
+## 🎯 目標
+為主題「**${topic}**」生成一份專業、完整、且可用性高的簡報企劃書。
+
+## 👥 角色
+你是一個由四位專家組成的 AI 團隊，包含：
+1.  **資料蒐集 Agent**：專責釐清需求與定義問題。
+2.  **Content Agent**：專責規劃內容架構與核心論點。
+3.  **Design Agent**：專責發想視覺風格與設計元素。
+4.  **QA Agent**：專責品質控管與提出整合建議。
+
+## 📝 規則
+- 請嚴格按照下方指定的順序，依序執行四位 Agent 的任務。
+- 後一位 Agent 的任務必須基於前一位 Agent 的產出成果。
+- 每位 Agent 的產出內容前，請加上標題，例如「### 1. 資料蒐集 Agent 產出」。
+- 最終請一次性生成所有 Agents 的完整回覆。
+
+---
+
+### 1. 資料蒐集 Agent 任務
+**任務：** 針對主題「**${topic}**」，識別並提出 2-3 個為了準備這份簡報，需要優先釐清的核心問題。
+
+### 2. Content Agent 任務
+**任務：** 基於 **Agent 1** 的分析，設計一份包含「開頭、中段、結尾」的簡報大綱，並為每一頁提供標題與 3 個核心重點。
+
+### 3. Design Agent 任務
+**任務：** 針對 **Agent 2** 的內容大綱，提出具體的視覺設計建議，包含一個整體的設計風格、配色方案 (3 個 Hex 色碼)，以及逐頁的視覺元素建議 (如圖表、圖示、圖片風格)。
+
+### 4. QA Agent 任務
+**任務：** 審閱 **Agent 1, 2, 3** 的所有產出，提出 2-3 點具體的整合與優化建議，以確保最終成品的邏輯連貫性與高品質。`;
             }
 
             const runSimulation = async () => {
@@ -584,87 +595,65 @@
                 resetSimUI();
                 processDisplay.classList.remove('hidden');
                 startSimBtn.disabled = true;
-                startSimBtn.textContent = '處理中...';
+                startSimBtn.textContent = '產生中...';
                 
                 const agentSteps = [
-                    { id: 1, name: '資料蒐集 Agent', color: 'blue' },
-                    { id: 2, name: 'Content Agent', color: 'purple' },
-                    { id: 3, name: 'Design Agent', color: 'pink' },
-                    { id: 4, name: 'QA Agent', color: 'green' }
+                    { id: 1, name: '資料蒐集 Agent', color: 'blue', duration: 500 },
+                    { id: 2, name: 'Content Agent', color: 'purple', duration: 600 },
+                    { id: 3, name: 'Design Agent', color: 'pink', duration: 500 },
+                    { id: 4, name: 'QA Agent', color: 'green', duration: 400 }
                 ];
                 
-                try {
-                    for (const step of agentSteps) {
-                        const stepDiv = document.getElementById(`agent-step-${step.id}`);
-                        const dot = stepDiv.querySelector('.status-dot');
-                        const text = stepDiv.querySelector('.status-text');
-                        const outputDiv = document.getElementById(`agent-output-${step.id}`);
-                        
-                        text.textContent = `${step.name} (思考中...)`;
-                        text.className = `status-text font-medium text-${step.color}-800`;
-                        dot.innerHTML = `<svg class="animate-spin-slow w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>`;
-                        dot.classList.remove('bg-gray-300');
-                        dot.classList.add(`bg-${step.color}-500`);
-                        outputDiv.style.display = 'block';
-                        outputDiv.innerHTML = `<pre class="font-sans animate-pulse">AI 正在生成內容...</pre>`;
-                        
-                        const resultText = await offlineAgentGenerator(step.id, topic);
-                        
-                        dot.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-white"><path d="M20 6 9 17l-5-5"></path></svg>`;
-                        text.textContent = `${step.name}：完成`;
-                        outputDiv.innerHTML = `<pre class="font-sans">${resultText}</pre>`;
-                        outputDiv.querySelector('pre').classList.remove('animate-pulse');
-                    }
-                    document.getElementById('agent-final-message').classList.remove('hidden');
-                    copyAgentBtn.classList.remove('hidden');
-                } catch (error) {
-                    console.error("執行 Agent 流程時發生錯誤:", error);
-                    const currentStepId = agentSteps.find(s => document.getElementById(`agent-step-${s.id}`).querySelector('.status-text').textContent.includes('思考中'))?.id || agentSteps[agentSteps.length - 1].id;
-                    const errorOutputDiv = document.getElementById(`agent-output-${currentStepId}`);
-                    if (errorOutputDiv) {
-                        errorOutputDiv.innerHTML = `<div class="text-red-600 bg-red-100 p-3 rounded-md"><strong>錯誤:</strong><p>${error.message}</p></div>`;
-                    }
-                } finally {
-                    startSimBtn.disabled = false;
-                    startSimBtn.textContent = '重新執行';
+                for (const step of agentSteps) {
+                    const stepDiv = document.getElementById(`agent-step-${step.id}`);
+                    const dot = stepDiv.querySelector('.status-dot');
+                    const text = stepDiv.querySelector('.status-text');
+                    
+                    text.textContent = `${step.name} (思考中...)`;
+                    text.className = `status-text font-medium text-${step.color}-800`;
+                    dot.innerHTML = `<svg class="animate-spin-slow w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>`;
+                    dot.classList.remove('bg-gray-300');
+                    dot.classList.add(`bg-${step.color}-500`);
+                    
+                    await new Promise(resolve => setTimeout(resolve, step.duration));
+                    
+                    dot.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-white"><path d="M20 6 9 17l-5-5"></path></svg>`;
+                    text.textContent = `${step.name}：完成`;
                 }
+                
+                const masterPrompt = generateMasterPrompt(topic);
+                masterPromptOutput.textContent = masterPrompt;
+                finalOutputContainer.classList.remove('hidden');
+
+                startSimBtn.disabled = false;
+                startSimBtn.textContent = '重新產生';
             };
 
             if (startSimBtn) {
                  startSimBtn.addEventListener('click', runSimulation);
             }
 
-            if (copyAgentBtn) {
-                copyAgentBtn.addEventListener('click', () => {
-                    let fullOutput = `【Agent 協作成品】\n主題：${topicInput.value.trim()}\n\n`;
-                    const agentNames = ['資料蒐集 Agent', 'Content Agent', 'Design Agent', 'QA Agent'];
-
-                    for (let i = 1; i <= 4; i++) {
-                        const outputDiv = document.getElementById(`agent-output-${i}`);
-                        const outputText = outputDiv.querySelector('pre')?.innerText || '';
-                        fullOutput += `--- [ ${agentNames[i - 1]} ] ---\n\n${outputText}\n\n`;
-                    }
-
+            if (copyMasterPromptBtn) {
+                copyMasterPromptBtn.addEventListener('click', () => {
+                    const textToCopy = masterPromptOutput.textContent;
                     const textarea = document.createElement('textarea');
-                    textarea.value = fullOutput.trim();
-                    textarea.style.position = 'fixed';
-                    textarea.style.left = '-9999px';
+                    textarea.value = textToCopy;
                     document.body.appendChild(textarea);
                     textarea.select();
                     try {
                         document.execCommand('copy');
-                        const btnSpan = copyAgentBtn.querySelector('span');
+                        const btnSpan = copyMasterPromptBtn.querySelector('span');
                         if (btnSpan) btnSpan.textContent = '已複製！';
                     } catch (err) {
-                        const btnSpan = copyAgentBtn.querySelector('span');
+                        const btnSpan = copyMasterPromptBtn.querySelector('span');
                         if (btnSpan) btnSpan.textContent = '複製失敗';
                         console.error('複製失敗', err);
                     }
                     document.body.removeChild(textarea);
 
                     setTimeout(() => {
-                        const btnSpan = copyAgentBtn.querySelector('span');
-                        if (btnSpan) btnSpan.textContent = '複製成果';
+                        const btnSpan = copyMasterPromptBtn.querySelector('span');
+                        if (btnSpan) btnSpan.textContent = '複製這份 Prompt';
                     }, 2000);
                 });
             }
