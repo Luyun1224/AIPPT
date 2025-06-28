@@ -329,9 +329,13 @@
             document.getElementById('sidebar-nav').addEventListener('click', (e) => {
                 const link = e.target.closest('a');
                 if (link) {
-                    e.preventDefault();
-                    window.location.hash = link.hash;
-                    switchTab(link.hash);
+                    const href = link.getAttribute('href');
+                    if (href && href.startsWith('#')) {
+                        e.preventDefault();
+                        window.location.hash = link.hash;
+                        switchTab(link.hash);
+                    }
+                    // If the link points to another page (e.g., Agent.html), allow default navigation
                 }
             });
 
