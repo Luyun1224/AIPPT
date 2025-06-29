@@ -263,15 +263,8 @@
                                  </select>
                                  <textarea id="agent-source-detail" placeholder="若有指定來源，請在此提供網址或重點" class="form-textarea w-full mt-2 p-3 border rounded-md" rows="2"></textarea>
                              </div>
-                             <div>
-                                 <label class="font-semibold text-lg">輸出格式 (Format)</label>
-                                 <select id="agent-format" class="form-select w-full mt-1 p-3 border rounded-md">
-                                     <option>Markdown</option>
-                                     <option>JSON</option>
-                                 </select>
-                             </div>
-                             <button id="agent-generate-btn" class="w-full bg-blue-800 text-white font-bold py-4 px-6 rounded-lg hover:bg-blue-700 transition-colors !mt-8">產生 Prompt</button>
-                         </div>
+                            <button id="agent-generate-btn" class="w-full bg-blue-800 text-white font-bold py-4 px-6 rounded-lg hover:bg-blue-700 transition-colors !mt-8">產生 Prompt</button>
+                        </div>
                          <!-- Prompt Preview -->
                          <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200">
                               <div class="flex justify-between items-center mb-4">
@@ -480,13 +473,12 @@
                  const agentTopic = getVal('agent-topic');
                  const agentAudience = getVal('agent-audience');
                  const agentTone = getVal('agent-tone');
-                 const agentFormat = getVal('agent-format');
-                 let sourceText = getVal('agent-source-type');
+                let sourceText = getVal('agent-source-type');
                  const sourceDetail = getVal('agent-source-detail');
                  if (sourceText !== '無特定來源' && sourceDetail) sourceText += `: ${sourceDetail}`;
 
                  const systemPrompt = `你是一位專業的 AI 簡報助理。\n角色: ${agentRole}\n主要任務: 協助使用者在「${agentContext}」的情境下，製作一份具備說服力的簡報。\n首選敘事風格: ${agentNarrative}`;
-                 const userPrompt = `【需求診斷】\n- 主題: ${agentTopic || '(未指定)'}\n- 長度: ${getVal('agent-length')}\n- 目標受眾: ${agentAudience || '(未指定)'}\n- 語氣風格: ${agentTone}\n- 指定資料來源: ${sourceText}\n\n【產出要求】\n1. 提供基於「${agentNarrative}」風格的完整結構大綱。\n2. 為每張投影片提供一句關鍵訊息 (Key Message)以及三個重點。\n3. 建議視覺元素 (例如：圖示、圖表、圖片風格)。\n4. 最終請以「${agentFormat}」格式輸出。`;
+                const userPrompt = `【需求診斷】\n- 主題: ${agentTopic || '(未指定)'}\n- 長度: ${getVal('agent-length')}\n- 目標受眾: ${agentAudience || '(未指定)'}\n- 語氣風格: ${agentTone}\n- 指定資料來源: ${sourceText}\n\n【產出要求】\n1. 提供基於「${agentNarrative}」風格的完整結構大綱。\n2. 為每張投影片提供一句關鍵訊息 (Key Message)以及三個重點。\n3. 建議視覺元素 (例如：圖示、圖表、圖片風格)。`;
 
                  document.getElementById('system-prompt-output').textContent = systemPrompt;
                  document.getElementById('user-prompt-output').textContent = userPrompt;
