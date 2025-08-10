@@ -168,22 +168,60 @@
                 <section id="tools" class="content-section">
                     <h2 class="text-3xl sm:text-4xl font-bold mb-8">常用 AI 工具推薦</h2>
                     <div class="overflow-x-auto bg-white rounded-xl shadow-md border border-gray-200">
-                        <table class="w-full text-left">
+                        <table class="w-full text-left text-sm md:text-base">
                             <thead class="bg-blue-50">
                                 <tr>
-                                    <th class="p-4 sm:p-5 font-semibold text-blue-900">工具名稱</th>
-                                    <th class="p-4 sm:p-5 font-semibold text-blue-900">強項</th>
-                                    <th class="p-4 sm:p-5 font-semibold text-blue-900">推薦場景</th>
+                                    <th class="p-4 font-semibold text-blue-900">工具名稱</th>
+                                    <th class="p-4 font-semibold text-blue-900">強項</th>
+                                    <th class="p-4 font-semibold text-blue-900">推薦場景</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200">
-                                <tr><td class="p-4 sm:p-5 font-medium">ChatGPT/Gemini/Claude</td><td class="p-4 sm:p-5">大綱發想、內容生成、文稿潤飾</td><td class="p-4 sm:p-5">從零開始或需要大量文字內容時。</td></tr>
-                                <tr><td class="p-4 sm:p-5 font-medium">Gamma</td><td class="p-4 sm:p-5">一鍵生成完整簡報，包含排版與配圖</td><td class="p-4 sm:p-5">追求極致效率，快速產出簡報初稿。</td></tr>
-                                <tr><td class="p-4 sm:p-5 font-medium">Napkin</td><td class="p-4 sm:p-5">靈感收集與連結，視覺化思緒</td><td class="p-4 sm:p-5">發散思考，整理碎片化靈感時。</td></tr>
-                                <tr><td class="p-4 sm:p-5 font-medium">NotebookLM</td><td class="p-4 sm:p-5">基於上傳文件進行問答與摘要</td><td class="p-4 sm:p-5">需深入研讀特定文獻或報告時。</td></tr>
-                                <tr><td class="p-4 sm:p-5 font-medium">Perplexity</td><td class="p-4 sm:p-5">附帶來源的對話式搜尋，資訊可信度高</td><td class="p-4 sm:p-5">需要查找有根據的資料或數據時。</td></tr>
-                                 <tr><td class="p-4 sm:p-5 font-medium">Canva</td><td class="p-4 sm:p-5">豐富的範本與 AI 圖像設計功能</td><td class="p-4 sm:p-5">需要客製化高質感視覺設計時。</td></tr>
-                                 <tr><td class="p-4 sm:p-5 font-medium">Felo</td><td class="p-4 sm:p-5">快速研究搜資料 × 一鍵生成 PPT</td><td class="p-4 sm:p-5">將會議討論或網頁資料快速轉化為簡報素材。</td></tr>
+                                <tr>
+                                    <td class="p-4 font-medium">ChatGPT/Gemini/Claude</td>
+                                    <td class="p-4">大綱發想、內容生成、文稿潤飾、程式碼輔助</td>
+                                    <td class="p-4">從零開始或需要大量文字內容時。</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4 font-medium">Skywork</td>
+                                    <td class="p-4">整合式 AI 平台，一站式完成資料搜尋、對話、內容與簡報生成</td>
+                                    <td class="p-4">需要從市場研究到簡報產出，一條龍完成任務時。</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4 font-medium">Gamma</td>
+                                    <td class="p-4">一鍵生成完整簡報，包含排版與配圖</td>
+                                    <td class="p-4">追求極致效率，快速產出簡報初稿。</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4 font-medium">Tome</td>
+                                    <td class="p-4">AI 原生，擅長用敘事方式生成整份簡報，視覺效果佳</td>
+                                    <td class="p-4">適合用於提案、產品介紹等需要說故事的場合。</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4 font-medium">Canva</td>
+                                    <td class="p-4">豐富的範本與 AI 圖像設計功能</td>
+                                    <td class="p-4">需要客製化高質感視覺設計時。</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4 font-medium">Manus</td>
+                                    <td class="p-4">一鍵生成簡報、學術寫作與論文排版，自動生成符合期刊規範的文稿</td>
+                                    <td class="p-4">撰寫學術論文或需要嚴謹引用格式的報告時。</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4 font-medium">NotebookLM</td>
+                                    <td class="p-4">基於上傳文件進行問答與摘要</td>
+                                    <td class="p-4">需深入研讀特定文獻或報告時。</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4 font-medium">Perplexity</td>
+                                    <td class="p-4">附帶來源的對話式搜尋，資訊可信度高</td>
+                                    <td class="p-4">需要查找有根據的資料或數據時。</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4 font-medium">Felo</td>
+                                    <td class="p-4">快速研究搜資料 × 一鍵生成 PPT</td>
+                                    <td class="p-4">將會議討論或網頁資料快速轉化為簡報素材。</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
