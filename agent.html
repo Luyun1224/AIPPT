@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>進階 Prompt — 多代理人 Agent 應用</title>
+    <title>進階 Prompt — 多代理人 Agent 應用 (專業版)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,16 +16,14 @@
             -moz-osx-font-smoothing: grayscale;
         }
         .content-wrapper {
-             background-color: #FFFFFF; /* 內容區塊為白色 */
+            background-color: #FFFFFF; /* 內容區塊為白色 */
         }
-        /* 為表格行添加底部邊框 */
         .custom-table tbody tr {
             border-bottom: 1px solid #E5E7EB; /* border-gray-200 */
         }
         .custom-table tbody tr:last-child {
             border-bottom: none;
         }
-        /* Loading spinner animation */
         .loader {
             border: 2px solid rgba(0,0,0,0.1);
             border-top: 2px solid #3D405B; /* 深藍色 spinner */
@@ -38,58 +36,54 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        textarea {
+            resize: vertical;
+        }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-4 sm:p-6 md:p-8">
 
-    <div class="aspect-container">
+    <div class="w-full max-w-6xl mx-auto">
         <div class="content-wrapper w-full shadow-lg rounded-2xl p-8 md:p-12 lg:p-16">
             
-            <!-- Header Section -->
             <header class="text-center mb-6 md:mb-8">
                 <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-[#263462] tracking-wider">
                     進階 Prompt：多代理人 Agent
                 </h1>
             </header>
             <div class="text-center mb-10 md:mb-12">
-                <a href="index.html" class="inline-block bg-blue-800 text-white py-2 px-4 rounded-lg hover:bg-blue-700">返回首頁</a>
+                <p class="text-lg text-gray-600">一個好的 Prompt 不僅僅是單向指令，更是與 AI 協作的起點。</p>
             </div>
 
-            <!-- Main Content: Table and Interactive App -->
             <main class="flex flex-col items-center space-y-12">
                 
-                <!-- Original Table Section -->
+                <!-- Updated Table Section -->
                 <div class="space-y-6 w-full max-w-5xl">
-                    <h2 class="text-2xl md:text-3xl font-semibold text-[#3D405B] mb-4 text-center">執行流程 & 核心任務</h2>
+                    <h2 class="text-2xl md:text-3xl font-semibold text-[#3D405B] mb-4 text-center">專業版執行流程 & 核心任務</h2>
                     <div class="bg-white/50 backdrop-blur-sm rounded-xl border border-gray-200 overflow-hidden">
-                        <table class="w-full text-left text-lg custom-table">
+                        <table class="w-full text-left text-base md:text-lg custom-table">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th class="p-5 font-semibold text-gray-700 tracking-wider">流程</th>
-                                    <th class="p-5 font-semibold text-gray-700 tracking-wider">代理人</th>
-                                    <th class="p-5 font-semibold text-gray-700 tracking-wider">核心任務</th>
+                                    <th class="p-4 md:p-5 font-semibold text-gray-700 tracking-wider">代理人</th>
+                                    <th class="p-4 md:p-5 font-semibold text-gray-700 tracking-wider">核心任務</th>
                                 </tr>
                             </thead>
                             <tbody class="text-gray-800">
                                 <tr class="hover:bg-gray-50/60 transition-colors duration-300">
-                                    <td class="p-5 align-top font-medium"><span class="bg-indigo-100 text-indigo-700 font-bold py-1 px-2.5 rounded-full text-sm mr-3">①</span>需求釐清</td>
-                                    <td class="p-5 align-top">資料蒐集 Agent</td>
-                                    <td class="p-5 align-top text-gray-600">與使用者對話，釐清 2-3 個關鍵問題，並搜尋最新數據/文獻 (APA7)。</td>
+                                    <td class="p-4 md:p-5 align-top font-medium"><span class="bg-indigo-100 text-indigo-700 font-bold py-1 px-2.5 rounded-full text-sm mr-2">①</span>資料萃取 Agent</td>
+                                    <td class="p-4 md:p-5 align-top text-gray-600">從研究中挑出所有關鍵數據與百分比，進行分類，並列出所需圖表類型。</td>
                                 </tr>
                                 <tr class="hover:bg-gray-50/60 transition-colors duration-300">
-                                    <td class="p-5 align-top font-medium"><span class="bg-teal-100 text-teal-700 font-bold py-1 px-2.5 rounded-full text-sm mr-3">②</span>架構撰寫</td>
-                                    <td class="p-5 align-top">Content Agent</td>
-                                    <td class="p-5 align-top text-gray-600">依據需求建立簡報大綱，並填入各頁面 3 行核心重點。</td>
+                                    <td class="p-4 md:p-5 align-top font-medium"><span class="bg-teal-100 text-teal-700 font-bold py-1 px-2.5 rounded-full text-sm mr-2">②</span>Content Agent</td>
+                                    <td class="p-4 md:p-5 align-top text-gray-600">生成包含具體數據的簡報大綱，並為每頁建議精確的圖表類型與數值。</td>
                                 </tr>
                                 <tr class="hover:bg-gray-50/60 transition-colors duration-300">
-                                    <td class="p-5 align-top font-medium"><span class="bg-purple-100 text-purple-700 font-bold py-1 px-2.5 rounded-full text-sm mr-3">③</span>視覺腳本</td>
-                                    <td class="p-5 align-top">Design Agent</td>
-                                    <td class="p-5 align-top text-gray-600">建議適合主題的圖片描述與整體配色。</td>
+                                    <td class="p-4 md:p-5 align-top font-medium"><span class="bg-purple-100 text-purple-700 font-bold py-1 px-2.5 rounded-full text-sm mr-2">③</span>Design Agent</td>
+                                    <td class="p-4 md:p-5 align-top text-gray-600">制定簡報視覺風格、配色，並提供逐頁的版面佈局與圖表位置建議。</td>
                                 </tr>
                                 <tr class="hover:bg-gray-50/60 transition-colors duration-300">
-                                    <td class="p-5 align-top font-medium"><span class="bg-slate-200 text-slate-700 font-bold py-1 px-2.5 rounded-full text-sm mr-3">④</span>品質整合</td>
-                                    <td class="p-5 align-top">QA Agent</td>
-                                    <td class="p-5 align-top text-gray-600">檢查字數、架構與引用格式，若不符則自動回修。</td>
+                                    <td class="p-4 md:p-5 align-top font-medium"><span class="bg-slate-200 text-slate-700 font-bold py-1 px-2.5 rounded-full text-sm mr-2">④</span>QA Agent</td>
+                                    <td class="p-4 md:p-5 align-top text-gray-600">檢查數據保留的完整性、圖表建議的準確性，並提出優化方向。</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -99,18 +93,18 @@
                 <!-- Gemini API Interactive Section -->
                 <div class="w-full max-w-5xl mt-8">
                     <div class="bg-gray-50/70 border border-gray-200 rounded-2xl p-6 md:p-8">
-                        <h3 class="text-2xl font-bold text-center text-[#263462] mb-2">✨ 體驗 Agent 協作流程</h3>
-                        <p class="text-gray-600 text-center mb-6">請輸入您想生成的主題，AI 將模擬四個代理人為您產出內容。</p>
+                        <h3 class="text-2xl font-bold text-center text-[#263462] mb-2">✨ 體驗專業 Agent 協作流程</h3>
+                        <p class="text-gray-600 text-center mb-6">請在下方貼入您的深度研究全文，AI 將模擬四個代理人為您產出簡報草稿。</p>
                         
-                        <div class="flex flex-col sm:flex-row gap-4 mb-6">
-                            <input type="text" id="topicInput" placeholder="例如：為國中生製作一份關於光合作用的教材" class="flex-grow bg-white border border-gray-300 text-gray-800 rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition">
-                            <button id="startButton" class="bg-[#263462] hover:bg-[#3D405B] text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 flex items-center justify-center disabled:bg-slate-400">
+                        <div class="flex flex-col gap-4 mb-6">
+                            <textarea id="topicInput" placeholder="請在此貼上您的深度研究全文..." class="w-full bg-white border border-gray-300 text-gray-800 rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition min-h-[150px]"></textarea>
+                            <button id="startButton" class="w-full sm:w-auto mx-auto bg-[#263462] hover:bg-[#3D405B] text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 flex items-center justify-center disabled:bg-slate-400">
                                 <span id="buttonText">開始執行</span>
                                 <div id="buttonLoader" class="loader hidden ml-2"></div>
                             </button>
                         </div>
                         
-                        <div id="results" class="space-y-4"></div>
+                        <div id="results" class="space-y-6"></div>
                     </div>
                 </div>
 
@@ -125,61 +119,78 @@
         const buttonText = document.getElementById('buttonText');
         const buttonLoader = document.getElementById('buttonLoader');
 
-        const apiKey = ""; // API Key is handled by the environment
+        const apiKey = ""; 
 
-        // Helper to call Gemini API
+        async function callGeminiWithBackoff(prompt, maxRetries = 5) {
+            let delay = 1000;
+            for (let i = 0; i < maxRetries; i++) {
+                try {
+                    return await callGemini(prompt);
+                } catch (error) {
+                    if (error.message.includes("429")) {
+                        console.warn(`API rate limit hit. Retrying in ${delay}ms...`);
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                        delay *= 2;
+                    } else {
+                        throw error;
+                    }
+                }
+            }
+            throw new Error(`API call failed after ${maxRetries} retries.`);
+        }
+
         async function callGemini(prompt) {
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
             const payload = {
                 contents: [{ role: "user", parts: [{ text: prompt }] }],
                 generationConfig: {
-                    temperature: 0.7,
+                    temperature: 0.5, // Lower temperature for more factual, less creative output
                     topP: 0.9,
                     topK: 40,
                 }
             };
 
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`API call failed with status: ${response.status}`);
-                }
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            
+            if (!response.ok) {
+                const errorBody = await response.text();
+                throw new Error(`API call failed with status: ${response.status}. Body: ${errorBody}`);
+            }
 
-                const result = await response.json();
+            const result = await response.json();
 
-                if (result.candidates && result.candidates.length > 0) {
-                    return result.candidates[0].content.parts[0].text;
-                } else {
-                    return "無法從 API 獲取有效回應。";
+            if (result.candidates && result.candidates.length > 0 && result.candidates[0].content && result.candidates[0].content.parts) {
+                return result.candidates[0].content.parts[0].text;
+            } else {
+                if (result.candidates && result.candidates.length > 0 && result.candidates[0].finishReason) {
+                     console.error("API call finished with reason:", result.candidates[0].finishReason, result.candidates[0].safetyRatings);
+                     return `無法生成回應，原因：${result.candidates[0].finishReason}。請檢查您的輸入內容是否合規。`;
                 }
-            } catch (error) {
-                console.error("Gemini API Error:", error);
-                return `API 呼叫失敗: ${error.message}`;
+                console.error("Unexpected API response structure:", result);
+                return "無法從 API 獲取有效回應。";
             }
         }
-
-        // Helper to render results
+        
         function renderResult(agentName, content, colorClass) {
             const resultElement = document.createElement('div');
-            resultElement.className = `bg-white border-l-4 ${colorClass} p-4 rounded-r-lg shadow-sm`;
+            resultElement.className = `bg-white border-l-4 ${colorClass} p-5 rounded-r-lg shadow-sm`;
             
             const agentTitle = document.createElement('h4');
-            agentTitle.className = 'font-bold text-lg text-gray-800 mb-2';
+            agentTitle.className = 'font-bold text-xl text-gray-800 mb-3';
             agentTitle.textContent = agentName;
 
-            const contentP = document.createElement('p');
-            contentP.className = 'text-gray-600 whitespace-pre-wrap';
-            contentP.textContent = content;
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'text-gray-700 whitespace-pre-wrap leading-relaxed';
+            contentDiv.innerHTML = content.replace(/### (.*?)\n/g, '<h5 class="text-lg font-semibold text-gray-800 mt-4 mb-2">$1</h5>')
+                                        .replace(/\n/g, '<br>');
             
             resultElement.appendChild(agentTitle);
-            resultElement.appendChild(contentP);
+            resultElement.appendChild(contentDiv);
             
-            // Animate entrance
             resultElement.style.opacity = '0';
             resultElement.style.transform = 'translateY(20px)';
             resultsDiv.appendChild(resultElement);
@@ -191,76 +202,149 @@
         }
         
         function showLoader(agentName, colorClass) {
-             renderResult(`${agentName} (思考中...)`, ' ', colorClass);
-             const lastResult = resultsDiv.lastElementChild;
-             const p = lastResult.querySelector('p');
-             p.innerHTML = '<div class="loader"></div>';
-             return lastResult;
+             const resultElement = document.createElement('div');
+             resultElement.className = `bg-white border-l-4 ${colorClass} p-5 rounded-r-lg shadow-sm`;
+             
+             const agentTitle = document.createElement('h4');
+             agentTitle.className = 'font-bold text-xl text-gray-800 mb-2 flex items-center';
+             agentTitle.textContent = `${agentName} (處理中...)`;
+
+             const loader = document.createElement('div');
+             loader.className = 'loader ml-3';
+             agentTitle.appendChild(loader);
+
+             resultElement.appendChild(agentTitle);
+             resultsDiv.appendChild(resultElement);
+             
+            resultElement.style.opacity = '0';
+            resultElement.style.transform = 'translateY(20px)';
+            requestAnimationFrame(() => {
+                resultElement.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                resultElement.style.opacity = '1';
+                resultElement.style.transform = 'translateY(0)';
+            });
+
+             return resultElement;
         }
 
-        function updateResult(element, content) {
-            const p = element.querySelector('p');
-            p.innerHTML = ''; // Clear loader
-            p.textContent = content;
+        function updateResult(element, agentName, content) {
+            const title = element.querySelector('h4');
+            title.textContent = agentName; 
+
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'text-gray-700 whitespace-pre-wrap leading-relaxed';
+            let formattedContent = content
+                .replace(/###\s*(.*?)\s*\n/g, '<h5 class="text-lg font-semibold text-gray-800 mt-4 mb-2">$1</h5>')
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/-\s(.*?)\n/g, '<li class="ml-4 list-disc">$1</li>')
+                .replace(/\n\n/g, '<br><br>') // Preserve paragraph breaks
+                .replace(/\n/g, '<br>');
+
+            contentDiv.innerHTML = formattedContent;
+            element.appendChild(contentDiv);
         }
+
+        function showCustomAlert(message) {
+            const existingAlert = document.getElementById('customAlert');
+            if(existingAlert) existingAlert.remove();
+            
+            const alertBox = document.createElement('div');
+            alertBox.id = 'customAlert';
+            alertBox.className = 'fixed top-5 right-5 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg shadow-lg z-50 animate-fade-in-down';
+            alertBox.textContent = message;
+            document.body.appendChild(alertBox);
+            
+            setTimeout(() => {
+                alertBox.classList.add('animate-fade-out-up');
+                setTimeout(() => alertBox.remove(), 500);
+            }, 3000);
+        }
+
+        const styleSheet = document.createElement("style");
+        styleSheet.type = "text/css";
+        styleSheet.innerText = `
+            @keyframes fadeInDown { from { opacity: 0; transform: translate3d(0, -20%, 0); } to { opacity: 1; transform: translate3d(0, 0, 0); } }
+            .animate-fade-in-down { animation: fadeInDown 0.5s ease; }
+            @keyframes fadeOutUp { from { opacity: 1; } to { opacity: 0; transform: translate3d(0, -20%, 0); } }
+            .animate-fade-out-up { animation: fadeOutUp 0.5s ease; }
+        `;
+        document.head.appendChild(styleSheet);
 
         startButton.addEventListener('click', async () => {
-            const topic = topicInput.value.trim();
-            if (!topic) {
-                // In-page custom alert
-                const existingAlert = document.getElementById('customAlert');
-                if(existingAlert) existingAlert.remove();
-                
-                const alertBox = document.createElement('div');
-                alertBox.id = 'customAlert';
-                alertBox.className = 'fixed top-5 right-5 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg shadow-lg z-50';
-                alertBox.textContent = '請先輸入主題！';
-                document.body.appendChild(alertBox);
-                setTimeout(() => alertBox.remove(), 3000);
+            const researchText = topicInput.value.trim();
+            if (!researchText) {
+                showCustomAlert('請先貼上研究全文！');
                 return;
             }
 
-            // Disable button and show loader
             startButton.disabled = true;
             buttonText.textContent = '執行中...';
             buttonLoader.classList.remove('hidden');
             resultsDiv.innerHTML = '';
 
-            let generatedContent = { topic };
+            let agentOutputs = {};
 
             try {
-                // Agent 1: 資料蒐集
-                let loader1 = showLoader('① 資料蒐集 Agent', 'border-indigo-500');
-                const prompt1 = `你是一位專業的資料蒐集員。針對主題：「${topic}」，請提出 2 個能幫助釐清需求的關鍵問題，並提供 3 個相關的關鍵字以供後續搜尋。`;
-                const result1 = await callGemini(prompt1);
-                updateResult(loader1, result1);
-                generatedContent.clarifications = result1;
+                // ### 1. 資料萃取 Agent
+                let loader1 = showLoader('① 資料萃取 Agent', 'border-indigo-500');
+                const prompt1 = `**角色：** 頂尖的醫學研究分析師。
+**任務：** 根據以下提供的【研究原文】，執行以下任務：
+1.  **關鍵數據與百分比**：從研究中挑出所有關鍵數據與百分比（例如臨床試驗結果、差異值、p 值、樣本數 n、信賴區間 CI 等）。
+2.  **主題分類**：將上述數據按主題分類（例如：生理機制、臨床效果、舒適度影響、指南立場等）。
+3.  **圖表建議**：根據數據，列出 3-5 個必須在簡報中呈現的圖表類型（例如：柱狀圖、比較表、流程圖）。
+**格式：** 請嚴格按照指定的標題與項目符號格式輸出，確保內容清晰、有條理。
 
-                // Agent 2: 架構撰寫
-                let loader2 = showLoader('② 架構撰寫 Agent', 'border-teal-500');
-                const prompt2 = `你是一位經驗豐富的內容架構師。基於主題：「${topic}」，以及初步的釐清資料：「${generatedContent.clarifications}」。請為此主題設計一個簡潔的三段式內容大綱。`;
-                const result2 = await callGemini(prompt2);
-                updateResult(loader2, result2);
-                generatedContent.outline = result2;
+【研究原文】
+${researchText}`;
+                const result1 = await callGeminiWithBackoff(prompt1);
+                updateResult(loader1, '### 1. 資料萃取 Agent 產出', result1);
+                agentOutputs.extraction = result1;
 
-                // Agent 3: 視覺腳本
-                let loader3 = showLoader('③ 視覺腳本 Agent', 'border-purple-500');
-                const prompt3 = `你是一位創意視覺設計師。根據以下內容大綱：「${generatedContent.outline}」，請為這個主題建議一個合適的色彩搭配（提供 3 個 Hex 色碼），並為每一段大綱發想一個具體的視覺畫面描述。`;
-                const result3 = await callGemini(prompt3);
-                updateResult(loader3, result3);
-                generatedContent.visuals = result3;
+                // ### 2. Content Agent
+                let loader2 = showLoader('② Content Agent', 'border-teal-500');
+                const prompt2 = `**角色：** 資深的醫療內容策略師。
+**任務：** 根據【資料萃取 Agent】的產出，生成一份簡報大綱。每頁必須包含：頁面標題、3–4 個核心要點（務必保留原始數據與具體數字）、明確的建議圖表（例如「柱狀圖：顯示三組不適比例 22%、56%、66%」）。
+**格式：** 以「開頭、中段、結尾」作為主要區塊，並為每頁標示頁碼與標題。
 
-                // Agent 4: 品質整合
-                let loader4 = showLoader('④ 品質整合 Agent', 'border-slate-500');
-                const prompt4 = `你是一位嚴謹的品質保證專家。請審閱以下全部產出：\n\n主題：「${topic}」\n內容大綱：「${generatedContent.outline}」\n視覺建議：「${generatedContent.visuals}」\n\n請以條列式提供 2-3 點具體的整合與優化建議，確保最終成品的一致性與高品質。`;
-                const result4 = await callGemini(prompt4);
-                updateResult(loader4, result4);
+【資料萃取 Agent 的產出】
+${agentOutputs.extraction}`;
+                const result2 = await callGeminiWithBackoff(prompt2);
+                updateResult(loader2, '### 2. Content Agent 產出', result2);
+                agentOutputs.content = result2;
+
+                // ### 3. Design Agent
+                let loader3 = showLoader('③ Design Agent', 'border-purple-500');
+                const prompt3 = `**角色：** 專業的醫療簡報設計師。
+**任務：** 根據【Content Agent】產出的簡報大綱，提供詳細的視覺設計方案。定義整體視覺風格為「專業醫學 × 現代簡潔」，提供 3 個主色（Hex 色碼）及其用途，並為每一頁提供具體的視覺建議（包含佈局、背景、圖表配色與位置）。
+**格式：** 先提供整體視覺方案，再逐頁提供詳細建議。
+
+【Content Agent 的產出】
+${agentOutputs.content}`;
+                const result3 = await callGeminiWithBackoff(prompt3);
+                updateResult(loader3, '### 3. Design Agent 產出', result3);
+                agentOutputs.design = result3;
+
+                // ### 4. QA Agent
+                let loader4 = showLoader('④ QA Agent', 'border-slate-500');
+                const prompt4 = `**角色：** 嚴謹的品質保證（QA）專家。
+**任務：** 審閱前三個 Agent 的所有產出，提供最終的整合與優化建議。檢查數據完整性、圖表一致性，並提出 2–3 個具體的優化方向（例如：某頁資訊過多建議拆分、某兩個圖表可合併呈現等）。
+**格式：** 分點列出檢查結果與優化建議。
+
+【資料萃取 Agent 產出】
+${agentOutputs.extraction}
+
+【Content Agent 產出】
+${agentOutputs.content}
+
+【Design Agent 產出】
+${agentOutputs.design}`;
+                const result4 = await callGeminiWithBackoff(prompt4);
+                updateResult(loader4, '### 4. QA Agent 產出', result4);
 
             } catch (error) {
                 console.error("Workflow Error:", error);
                 renderResult("錯誤", `工作流程中發生錯誤: ${error.message}`, "border-red-500");
             } finally {
-                // Re-enable button
                 startButton.disabled = false;
                 buttonText.textContent = '開始執行';
                 buttonLoader.classList.add('hidden');
