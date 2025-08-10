@@ -56,7 +56,7 @@
         }
         /* 讓 pre 標籤能夠自動換行 */
         pre {
-            white-space: pre-wrap;       /* CSS3 */
+            white-space: pre-wrap;      /* CSS3 */
             white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
             white-space: -pre-wrap;      /* Opera 4-6 */
             white-space: -o-pre-wrap;    /* Opera 7 */
@@ -264,7 +264,7 @@
                                  <textarea id="agent-source-detail" placeholder="若有指定來源，請在此提供網址或重點" class="form-textarea w-full mt-2 p-3 border rounded-md" rows="2"></textarea>
                              </div>
                             <button id="agent-generate-btn" class="w-full bg-blue-800 text-white font-bold py-4 px-6 rounded-lg hover:bg-blue-700 transition-colors !mt-8">產生 Prompt</button>
-                        </div>
+                         </div>
                          <!-- Prompt Preview -->
                          <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200">
                               <div class="flex justify-between items-center mb-4">
@@ -273,8 +273,8 @@
                                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
                                      <span id="copy-btn-text">複製全部</span>
                                  </button>
-                              </div>
-                              <div class="space-y-4">
+                             </div>
+                             <div class="space-y-4">
                                  <div>
                                      <h4 class="font-semibold text-blue-800">System Prompt</h4>
                                      <pre id="system-prompt-output" class="text-sm sm:text-base bg-blue-50/70 p-4 rounded-md overflow-x-auto h-56 leading-relaxed">點擊「產生 Prompt」以預覽...</pre>
@@ -283,7 +283,7 @@
                                       <h4 class="font-semibold text-blue-800">User Prompt</h4>
                                        <pre id="user-prompt-output" class="text-sm sm:text-base bg-blue-50/70 p-4 rounded-md overflow-x-auto h-56 leading-relaxed"></pre>
                                  </div>
-                              </div>
+                             </div>
                          </div>
                      </div>
                      <!-- Prompt Guiding Factors -->
@@ -316,22 +316,22 @@
                                     <tr>
                                         <td class="p-4"><span class="bg-blue-100 text-blue-800 text-sm font-bold px-2 py-1 rounded-full">1</span></td>
                                         <td class="p-4 font-medium">資料蒐集 Agent</td>
-                                        <td class="p-4 text-blue-800">與使用者對話，釐清 2-3 個關鍵問題，並搜尋最新數據/文獻 。</td>
+                                        <td class="p-4 text-blue-800">萃取所有關鍵數據與百分比，按主題分類，並建議圖表類型。</td>
                                     </tr>
                                     <tr>
                                         <td class="p-4"><span class="bg-purple-100 text-purple-800 text-sm font-bold px-2 py-1 rounded-full">2</span></td>
                                         <td class="p-4 font-medium">Content Agent</td>
-                                        <td class="p-4 text-blue-800">依據需求建立簡報大綱，並填入各頁面 3 行核心重點。</td>
+                                        <td class="p-4 text-blue-800">生成簡報大綱，每頁包含標題、核心要點(保留數據)，並建議具體圖表類型。</td>
                                     </tr>
                                     <tr>
                                         <td class="p-4"><span class="bg-pink-100 text-pink-800 text-sm font-bold px-2 py-1 rounded-full">3</span></td>
                                         <td class="p-4 font-medium">Design Agent</td>
-                                        <td class="p-4 text-blue-800">建議適合主題的圖片描述與整體配色。</td>
+                                        <td class="p-4 text-blue-800">制定整體視覺風格、配色方案，並提供逐頁的視覺與版面配置建議。</td>
                                     </tr>
                                     <tr>
                                         <td class="p-4"><span class="bg-green-100 text-green-800 text-sm font-bold px-2 py-1 rounded-full">4</span></td>
                                         <td class="p-4 font-medium">QA Agent</td>
-                                        <td class="p-4 text-blue-800">檢查字數、架構與引用格式，若不符則自動回修。</td>
+                                        <td class="p-4 text-blue-800">檢查數據與圖表一致性，並提出 2-3 個具體優化建議。</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -342,10 +342,10 @@
                          <h3 class="text-2xl font-bold text-blue-900 mb-2 text-center">✨ 體驗 Agent 協作流程</h3>
                          <p class="text-center text-blue-800 mb-6">請輸入您想生成的主題，我們將為您產生一份可立即使用的「大師級 Prompt」！</p>
                          <div class="max-w-3xl mx-auto">
-                            <div class="flex flex-col sm:flex-row gap-2">
-                                <input id="agent-sim-topic" type="text" placeholder="例如：為國中生製作一份關於光合作用的教材" class="form-input flex-grow w-full p-3 border rounded-md">
-                                <button id="agent-sim-start-btn" class="w-full sm:w-auto bg-blue-800 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed">產生 Prompt</button>
-                            </div>
+                             <div class="flex flex-col sm:flex-row gap-2">
+                                 <input id="agent-sim-topic" type="text" placeholder="例如：為國中生製作一份關於光合作用的教材" class="form-input flex-grow w-full p-3 border rounded-md">
+                                 <button id="agent-sim-start-btn" class="w-full sm:w-auto bg-blue-800 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed">產生 Prompt</button>
+                             </div>
                          </div>
                     </div>
                     
@@ -404,8 +404,8 @@
             <!-- ===== 頁尾 (Footer) ===== -->
             <footer class="w-full bg-blue-900 text-white p-4">
                 <div class="container mx-auto flex flex-col sm:flex-row justify-between items-center text-sm gap-2 sm:gap-0">
-                    <span>© 2025 奇美醫院教學中心製</span>
-                    <span>資料更新: 2025-06-27</span>
+                    <span>© 2025 奇美醫院教學部製</span>
+                    <span>資料更新: 2025-08-10</span>
                 </div>
             </footer>
         </div>
@@ -466,7 +466,7 @@
             const generateAgentPrompts = () => {
                  if (!document.getElementById('prompt-builder').classList.contains('active')) return;
                  const getVal = id => document.getElementById(id).value;
-                 
+                
                  const agentRole = getVal('agent-role');
                  const agentContext = getVal('agent-context');
                  const agentNarrative = getVal('agent-narrative');
@@ -546,30 +546,47 @@
 
 ## 👥 角色
 你是一個由四位專家組成的 AI 團隊，包含：
-1.  **資料蒐集 Agent**：專責釐清需求與定義問題。
-2.  **Content Agent**：專責規劃內容架構與核心論點。
-3.  **Design Agent**：專責發想視覺風格與設計元素。
+1.  **資料萃取 Agent**：專責挑出所有關鍵數據與百分比，並按主題分類。
+2.  **Content Agent**：專責規劃內容架構、核心論點，並建議具體圖表。
+3.  **Design Agent**：專責發想視覺風格、配色、與版面配置。
 4.  **QA Agent**：專責品質控管與提出整合建議。
 
 ## 📝 規則
-- 請嚴格按照下方指定的順序，依序執行四位 Agent 的任務。
-- 後一位 Agent 的任務必須基於前一位 Agent 的產出成果。
-- 每位 Agent 的產出內容前，請加上標題，例如「### 1. 資料蒐集 Agent 產出」。
-- 最終請一次性生成所有 Agents 的完整回覆。
+- 嚴格依序執行四位 Agent 的任務，後續任務需基於前一項產出。
+- 每位 Agent 產出前加上標題（例如「### 1. 資料萃取 Agent 產出」）。
+- 務必保留所有研究中的數據與百分比，即使篇幅較長，也不可省略。
+- 圖表建議需明確到類型與數值（方便 AI 工具直接生成）。
+- 最終一次性生成所有 Agents 的完整回覆。
 
 ---
 
-### 1. 資料蒐集 Agent 任務
-**任務：** 針對主題「**${topic}**」，識別並提出 2-3 個為了準備這份簡報，需要優先釐清的核心問題。
+### 1. 資料萃取 Agent 任務
+**任務：**
+- **數據萃取：** 依據研究主題「**${topic}**」，挑出所有關鍵數據與百分比（例如臨床試驗結果、差異值、p 值、樣本數等）。
+- **主題分類：** 將萃取出的數據按主題分類（例如生理機制、臨床效果、舒適度影響、指南立場等）。
+- **圖表建議：** 列出必須在簡報中呈現的圖表類型（如柱狀圖、比較表、流程圖）。
 
 ### 2. Content Agent 任務
-**任務：** 基於 **Agent 1** 的分析，設計一份包含「開頭、中段、結尾」的簡報大綱，並為每一頁提供標題與 3 個核心重點。
+**任務：** 基於 **Agent 1** 的產出，進行以下工作：
+- **大綱生成：** 生成包含「開頭、中段、結尾」的簡報大綱。
+- **頁面內容：** 為每一頁建立以下內容：
+    - **頁面標題**
+    - **3–4 個核心要點**（務必保留原始數據與具體數字）
+    - **建議圖表或圖示類型**（例如「柱狀圖：顯示三組不適比例 22%、56%、66%」）
+- **文字風格：** 對於描述性內容，應用精簡文字；對於數據性內容，直接原文呈現，不刪減。
 
 ### 3. Design Agent 任務
-**任務：** 針對 **Agent 2** 的內容大綱，提出具體的視覺設計建議，包含一個整體的設計風格、配色方案 (3 個 Hex 色碼)，以及逐頁的視覺元素建議 (如圖表、圖示、圖片風格)。
+**任務：** 針對 **Agent 2** 的內容大綱，提出具體的視覺設計建議：
+- **整體風格：** 制定簡報的整體視覺風格（如專業醫學 × 現代簡潔）。
+- **配色方案：** 提供 3 個主色（Hex 色碼）。
+- **逐頁建議：** 提供逐頁的視覺建議（如背景、圖片風格、圖表配色）。
+- **版面佈局：** 指定數據圖表在頁面中的最佳位置（例如「左側圖表、右側文字」）。
 
 ### 4. QA Agent 任務
-**任務：** 審閱 **Agent 1, 2, 3** 的所有產出，提出 2-3 點具體的整合與優化建議，以確保最終成品的邏輯連貫性與高品質。`;
+**任務：** 審閱 **Agent 1, 2, 3** 的所有產出，提出最終建議：
+- **數據核對：** 檢查每頁是否保留了原始數據與百分比。
+- **圖表驗證：** 確認圖表建議與數據相符，避免 AI 簡報工具生成錯誤比例。
+- **優化建議：** 提出 2–3 個優化方向（例如：是否需要額外的註解文字、是否應合併圖表以減少頁數）。`;
             }
 
             const runSimulation = async () => {
