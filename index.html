@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
+        /* Base Styles */
         body {
             font-family: 'Noto Sans TC', sans-serif;
             background-color: #F8F5F2; /* 米白色背景 */
@@ -36,12 +37,9 @@
              background-color: #F0EFEA;
              border-color: #D1D5DB;
         }
-        /* Mobile sidebar transition */
         .sidebar-transition {
             transition: transform 0.3s ease-in-out;
         }
-
-        /* Agent 流程動畫 */
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
@@ -54,17 +52,13 @@
         .status-text {
             transition: all 0.3s ease-in-out;
         }
-        /* 讓 pre 標籤能夠自動換行 */
         pre {
-            white-space: pre-wrap;     /* CSS3 */
-            white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-            white-space: -pre-wrap;      /* Opera 4-6 */
-            white-space: -o-pre-wrap;    /* Opera 7 */
-            word-wrap: break-word;       /* Internet Explorer 5.5+ */
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
         #master-prompt-output {
-            background-color: #1E3A8A; /* 深藍色背景 */
-            color: #E0F2FE; /* 亮藍色文字 */
+            background-color: #1E3A8A;
+            color: #E0F2FE;
             border: 1px solid #93C5FD;
             border-radius: 0.5rem;
             padding: 1.5rem;
@@ -72,16 +66,28 @@
             min-height: 300px;
         }
         #master-prompt-output strong {
-            color: #FBBF24; /* Amber 400 for highlights */
+            color: #FBBF24;
         }
+
+        /* Styles for Prompt Guide Section */
+        #prompt-guide {
+            background-color: #fdfdfc;
+            color: #3d405b;
+        }
+        .flip-card { perspective: 1000px; }
+        .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s; transform-style: preserve-3d; }
+        .flip-card:hover .flip-card-inner { transform: rotateY(180deg); }
+        .flip-card-front, .flip-card-back { position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1rem; border-radius: 0.75rem; }
+        .flip-card-back { transform: rotateY(180deg); }
+        #prompt-guide .nav-link { transition: color 0.3s, border-color 0.3s; }
+        #prompt-guide .nav-link:hover { color: #81b29a; }
+        #prompt-guide .nav-link.active { color: #81b29a; border-bottom-width: 2px; border-color: #81b29a; }
+        #prompt-guide .tab-button.active { background-color: #81b29a; color: #fdfdfc; }
+        #prompt-guide .raft-card.active { border-color: #81b29a; transform: translateY(-5px); }
     </style>
     <!-- 
         Tailwind JIT Safelist:
-        This comment helps ensure Tailwind's Just-In-Time compiler recognizes these dynamically used classes.
-        bg-blue-500 text-blue-800
-        bg-purple-500 text-purple-800
-        bg-pink-500 text-pink-800
-        bg-green-500 text-green-800
+        bg-blue-500 text-blue-800, bg-purple-500 text-purple-800, bg-pink-500 text-pink-800, bg-green-500 text-green-800
     -->
 </head>
 <body class="antialiased text-base md:text-lg">
@@ -112,6 +118,10 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 mr-3 text-blue-800"><path d="m12 3-1.45 4.74-5.02.34 3.93 3.1-1.25 4.82L12 13.1l4.79 2.9-1.25-4.82 3.93-3.1-5.02-.34L12 3z"></path></svg>
                     黃金結構與原則
                 </a>
+                <a href="#prompt-guide" class="sidebar-item group flex items-center p-3 rounded-lg text-left transition-colors duration-200 hover:bg-gray-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 mr-3 text-blue-800"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                    Prompt 指南
+                </a>
                 <a href="#prompt-generator" class="sidebar-item group flex items-center p-3 rounded-lg text-left transition-colors duration-200 hover:bg-gray-200">
                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 mr-3 text-blue-800"><path d="M15.5 2.1a2.5 2.5 0 0 0-3 0L11 3.4a2.5 2.5 0 0 0 0 3l1.5 1.3a2.5 2.5 0 0 0 3 0L17 6.4a2.5 2.5 0 0 0 0-3Z"/><path d="m11.5 12.5 3 3"/><path d="M3 12a9 9 0 0 0 9 9 9 9 0 0 0 9-9h-9Z"/></svg>
                     AI 企劃產生器
@@ -124,10 +134,10 @@
 
         <!-- ===== 右側內容區 (Main Content) ===== -->
         <div class="flex flex-col flex-1 w-full lg:w-auto">
-            <main class="flex-grow p-6 sm:p-8 md:p-12">
+            <main class="flex-grow">
 
                 <!-- 0. 歡迎使用 -->
-                <section id="welcome" class="content-section active">
+                <section id="welcome" class="content-section active p-6 sm:p-8 md:p-12">
                     <h2 class="text-3xl sm:text-4xl font-bold mb-4">歡迎來到 AI 簡報指南</h2>
                     <p class="text-lg sm:text-xl text-blue-800 mb-8">本指南旨在協助您掌握運用 AI 提升簡報效率與品質的核心技巧。</p>
                     <div class="bg-white p-6 sm:p-8 rounded-xl shadow-md border border-gray-200 space-y-6">
@@ -137,13 +147,14 @@
                             <li><strong>五大核心任務</strong>：建立製作一份成功簡報的正確心態與流程。</li>
                             <li><strong>常用 AI 工具</strong>：認識市面上主流的 AI 簡報工具，了解它們的強項與適用場景。</li>
                             <li><strong>黃金結構與原則</strong>：學習如何搭建簡報的骨架，並用視覺設計強化訊息。</li>
+                            <li><strong>Prompt 指南</strong>：學習如何撰寫有效的提示詞 (Prompt)，讓 AI 更懂你的心。</li>
                             <li><strong>AI 企劃產生器</strong>：透過簡單的表單設定，驅動一個由多位專家 AI 組成的團隊，為您自動化生成一份高品質的簡報企劃書。</li>
                         </ul>
                     </div>
                 </section>
                 
                 <!-- 1. 簡報的五大核心任務 -->
-                <section id="tasks" class="content-section">
+                <section id="tasks" class="content-section p-6 sm:p-8 md:p-12">
                     <h2 class="text-3xl sm:text-4xl font-bold mb-8">簡報的五大核心任務</h2>
                     <div class="overflow-x-auto bg-white rounded-xl shadow-md border border-gray-200">
                         <table class="w-full text-left">
@@ -165,7 +176,7 @@
                 </section>
                 
                 <!-- 2. 常用 AI 工具推薦 -->
-                <section id="tools" class="content-section">
+                <section id="tools" class="content-section p-6 sm:p-8 md:p-12">
                     <h2 class="text-3xl sm:text-4xl font-bold mb-8">常用 AI 工具推薦</h2>
                     <div class="overflow-x-auto bg-white rounded-xl shadow-md border border-gray-200">
                         <table class="w-full text-left text-sm md:text-base">
@@ -228,7 +239,7 @@
                 </section>
 
                 <!-- 3. 三大黃金簡報結構、三大關鍵視覺原則 -->
-                <section id="principles" class="content-section">
+                <section id="principles" class="content-section p-6 sm:p-8 md:p-12">
                     <h2 class="text-3xl sm:text-4xl font-bold mb-8">黃金結構與視覺原則</h2>
                     <div class="space-y-16">
                         <div>
@@ -249,9 +260,95 @@
                         </div>
                     </div>
                 </section>
+
+                <!-- 4. Prompt Guide -->
+                <section id="prompt-guide" class="content-section scroll-smooth">
+                    <header class="bg-fdfdfc/80 backdrop-blur-sm sticky top-0 z-10 shadow-sm">
+                        <nav class="container mx-auto px-6 py-3">
+                            <div class="flex justify-between items-center">
+                                <h1 class="text-xl font-bold text-[#3d405b]">互動式提示詞工程指南</h1>
+                                <div class="hidden md:flex space-x-8">
+                                    <a href="#problem" class="nav-link">核心問題</a>
+                                    <a href="#framework" class="nav-link">解決方案</a>
+                                    <a href="#advanced" class="nav-link">進階技巧</a>
+                                </div>
+                            </div>
+                        </nav>
+                    </header>
+                    <main>
+                        <section id="hero" class="py-20 bg-[#f4f1de]/50">
+                            <div class="container mx-auto px-6 text-center">
+                                <h2 class="text-4xl md:text-5xl font-bold text-[#3d405b] mb-4">決定性的一句話</h2>
+                                <p class="text-lg md:text-xl text-[#3d405b]/80 max-w-3xl mx-auto mb-12">深入剖析提示詞如何主宰 AI 表現。一句話的微小差異，能導致輸出品質的天壤之別。體驗下方的卡片，感受優質與劣質提示詞的巨大差異。</p>
+                                
+                                <div class="flip-card w-full max-w-2xl h-64 mx-auto cursor-pointer">
+                                    <div class="flip-card-inner shadow-lg rounded-xl">
+                                        <div class="flip-card-front bg-white border border-red-200">
+                                            <h3 class="text-lg font-bold text-red-600 mb-2">❌ 劣質提示詞</h3>
+                                            <p class="text-2xl font-light text-gray-700">「告訴我關於AI的事。」</p>
+                                            <p class="mt-4 text-gray-500 text-sm">(懸停以查看優化版本)</p>
+                                        </div>
+                                        <div class="flip-card-back bg-[#e07a5f]/80 text-white">
+                                            <h3 class="text-lg font-bold mb-2">✅ 優質提示詞</h3>
+                                            <p class="text-2xl font-light">「扮演一位資深科技記者，用三個段落向對AI一無所知的大學生解釋『生成式AI』的概念，並舉出一個日常生活中的例子。」</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="problem" class="py-20">
+                            <div class="container mx-auto px-6">
+                                <div class="text-center mb-12">
+                                    <h2 class="text-3xl font-bold">核心問題：為何提示詞會失敗？</h2>
+                                    <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">一個結構不良的提示詞，往往會導致模型產生不準確、不相關甚至誤導性的輸出。點擊下方卡片，了解常見的失敗模式。</p>
+                                </div>
+                                <div id="failure-cards-container" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="framework" class="py-20 bg-[#f4f1de]/50">
+                            <div class="container mx-auto px-6">
+                                <div class="text-center mb-12">
+                                    <h2 class="text-3xl font-bold">解決方案：高效提示詞的 R.A.F.T 框架</h2>
+                                    <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">要建構高效能提示詞，我們可以遵循 R.A.F.T 框架。這個框架的每個元素都像一個約束條件，能縮小 AI 的搜尋範圍，引導它產出更精準的結果。點擊下方任一元素查看範例。</p>
+                                </div>
+                                <div class="max-w-4xl mx-auto">
+                                    <div id="raft-cards-container" class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                                    </div>
+                                    <div id="raft-example-display" class="bg-white p-6 rounded-lg shadow-lg border border-gray-200 min-h-[150px]">
+                                        <p class="text-center text-gray-500">請點擊上方卡片查看範例</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="advanced" class="py-20">
+                            <div class="container mx-auto px-6">
+                                <div class="text-center mb-12">
+                                    <h2 class="text-3xl font-bold">進階技巧：從業者策略指南</h2>
+                                    <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">掌握基礎後，更複雜的技術能應對需要多步驟推理或精細控制的任務。這些技巧能為 AI 的認知過程「搭建鷹架」，引導它成為更可靠的思考夥伴。</p>
+                                </div>
+                                <div class="max-w-4xl mx-auto">
+                                    <div class="mb-4 flex justify-center border-b border-gray-200">
+                                        <div id="tabs-container" class="flex flex-wrap -mb-px"></div>
+                                    </div>
+                                    <div id="tab-content-container"></div>
+                                </div>
+                            </div>
+                        </section>
+                    </main>
+                    <footer class="bg-[#3d405b] text-white py-8">
+                        <div class="container mx-auto px-6 text-center">
+                            <p>互動式提示詞工程指南</p>
+                            <p class="text-sm text-gray-400 mt-2">基於「決定性的一句話」報告內容建構。</p>
+                        </div>
+                    </footer>
+                </section>
                 
-                <!-- 4. AI 企劃產生器 (融合版) -->
-                <section id="prompt-generator" class="content-section">
+                <!-- 5. AI 企劃產生器 (融合版) -->
+                <section id="prompt-generator" class="content-section p-6 sm:p-8 md:p-12">
                      <h2 class="text-3xl sm:text-4xl font-bold mb-8">AI 簡報企劃產生器 (Agent 團隊模式)</h2>
                      <div class="grid lg:grid-cols-2 gap-8">
                          <!-- Agent Builder Form -->
@@ -283,7 +380,7 @@
                                      <option>5-10 張 (快報)</option><option selected>10-15 張 (標準)</option><option>20+ 張 (深度報告)</option>
                                  </select>
                              </div>
-                              <div>
+                             <div>
                                  <label for="agent-tone" class="font-semibold text-lg">語氣風格 (Tone)</label>
                                  <select id="agent-tone" class="form-select w-full mt-1 p-3 border rounded-md">
                                      <option>專業權威</option><option>同理心且溫暖</option><option>客觀中立</option><option>風趣幽默</option><option>簡潔有力</option>
@@ -297,40 +394,40 @@
                                  <textarea id="agent-source-detail" placeholder="若有指定來源，請在此提供網址或重點" class="form-textarea w-full mt-2 p-3 border rounded-md" rows="2"></textarea>
                              </div>
                             <button id="agent-generate-btn" class="w-full bg-blue-800 text-white font-bold py-4 px-6 rounded-lg hover:bg-blue-700 transition-colors !mt-8 disabled:bg-gray-400 disabled:cursor-not-allowed">
-                                <span id="generate-btn-text">啟動 Agent 團隊產生企劃</span>
-                            </button>
+                                 <span id="generate-btn-text">啟動 Agent 團隊產生企劃</span>
+                             </button>
                          </div>
                          <!-- Agent Process and Output -->
                          <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200">
-                              <h3 class="text-xl sm:text-2xl font-bold text-blue-900 mb-4">2. Agent 團隊執行與產出</h3>
-                              <!-- Agent 執行流程顯示區 -->
-                              <div id="agent-process-display" class="hidden">
-                                  <!-- 流程步驟 -->
-                                  <div id="agent-steps-container" class="space-y-4 mb-8">
-                                      <p class="text-center font-semibold">正在模擬 Agent 團隊思考過程...</p>
-                                      <!-- Steps will be dynamically generated here -->
-                                  </div>
-                              </div>
-                              <!-- Final Output -->
-                              <div id="agent-final-output" class="hidden">
+                               <h3 class="text-xl sm:text-2xl font-bold text-blue-900 mb-4">2. Agent 團隊執行與產出</h3>
+                               <!-- Agent 執行流程顯示區 -->
+                               <div id="agent-process-display" class="hidden">
+                                   <!-- 流程步驟 -->
+                                   <div id="agent-steps-container" class="space-y-4 mb-8">
+                                       <p class="text-center font-semibold">正在模擬 Agent 團隊思考過程...</p>
+                                   </div>
+                               </div>
+                               <!-- Final Output -->
+                               <div id="agent-final-output" class="hidden">
                                    <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-4">
-                                      <h4 class="text-xl font-bold text-green-700">� 企劃書產生成功！</h4>
-                                      <button id="copy-master-prompt-btn" class="w-full sm:w-auto bg-green-600 text-white font-bold py-2 px-5 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2">
-                                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
-                                          <span id="copy-btn-text">複製這份 Prompt</span>
-                                      </button>
-                                  </div>
+                                       <h4 class="text-xl font-bold text-green-700">✔ 企劃書產生成功！</h4>
+                                       <button id="copy-master-prompt-btn" class="w-full sm:w-auto bg-green-600 text-white font-bold py-2 px-5 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2">
+                                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
+                                           <span id="copy-btn-text">複製這份 Prompt</span>
+                                       </button>
+                                   </div>
                                    <p class="mb-4 text-sm">您可以將下方這份「Prompt」完整複製，並貼到任何大型語言模型（如 ChatGPT, Gemini, Claude）中，以獲得高品質的簡報企劃書。</p>
                                    <pre id="master-prompt-output"></pre>
-                              </div>
-                              <div id="output-placeholder" class="text-center py-20 text-gray-500">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto h-12 w-12 text-gray-400"><path d="M12 8V4H8"></path><path d="M16 4h-4v4"></path><path d="M12 14v2"></path><path d="M12 20v-2"></path><path d="M20 14v2"></path><path d="M20 20v-2"></path><path d="m14 16-2 2-2-2"></path><path d="m18 16-2 2-2-2"></path><path d="M4 14v2"></path><path d="M4 20v-2"></path><path d="m6 16-2 2-2-2"></path><path d="M12 12V8"></path><path d="M10 4.5 12 6l2-1.5"></path><path d="M8.8 12H8v-2"></path><path d="m15.2 10-1.2-2"></path></svg>
-                                <p class="mt-4 font-semibold">產出結果將顯示於此</p>
-                                <p class="text-sm">請在左側填寫您的需求</p>
-                              </div>
+                               </div>
+                               <div id="output-placeholder" class="text-center py-20 text-gray-500">
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto h-12 w-12 text-gray-400"><path d="M12 8V4H8"></path><path d="M16 4h-4v4"></path><path d="M12 14v2"></path><path d="M12 20v-2"></path><path d="M20 14v2"></path><path d="M20 20v-2"></path><path d="m14 16-2 2-2-2"></path><path d="m18 16-2 2-2-2"></path><path d="M4 14v2"></path><path d="M4 20v-2"></path><path d="m6 16-2 2-2-2"></path><path d="M12 12V8"></path><path d="M10 4.5 12 6l2-1.5"></path><path d="M8.8 12H8v-2"></path><path d="m15.2 10-1.2-2"></path></svg>
+                                   <p class="mt-4 font-semibold">產出結果將顯示於此</p>
+                                   <p class="text-sm">請在左側填寫您的需求</p>
+                               </div>
                          </div>
                      </div>
                 </section>
+
             </main>
             <!-- ===== 頁尾 (Footer) ===== -->
             <footer class="w-full bg-blue-900 text-white p-4">
@@ -344,10 +441,11 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // ===== Main App Logic =====
             const sidebar = document.getElementById('sidebar');
             const menuToggleBtn = document.getElementById('menu-toggle-btn');
             const overlay = document.getElementById('overlay');
-            const navLinks = document.querySelectorAll('.sidebar-item');
+            const navLinks = document.querySelectorAll('#sidebar-nav .sidebar-item');
 
             const openMenu = () => {
                 sidebar.classList.remove('-translate-x-full');
@@ -362,8 +460,7 @@
             menuToggleBtn.addEventListener('click', openMenu);
             overlay.addEventListener('click', closeMenu);
 
-            // ===== 頁面導航邏輯 (Page Navigation) =====
-            const contentSections = document.querySelectorAll('.content-section');
+            const contentSections = document.querySelectorAll('body > div > div > main > .content-section');
 
             const switchTab = (hash) => {
                 if (!hash) hash = '#welcome';
@@ -373,11 +470,7 @@
                 navLinks.forEach(link => {
                     const isActive = link.hash === hash;
                     link.classList.toggle('active', isActive);
-                    if (isActive) {
-                        link.setAttribute('aria-current', 'page');
-                    } else {
-                        link.removeAttribute('aria-current');
-                    }
+                    link.setAttribute('aria-current', isActive ? 'page' : null);
                 });
                 
                 contentSections.forEach(section => section.classList.toggle('active', `#${section.id}` === hash));
@@ -386,10 +479,8 @@
                 closeMenu();
             };
             
-            // Initial load
             switchTab(window.location.hash);
 
-            // Handle clicks on nav links
             document.getElementById('sidebar-nav').addEventListener('click', (e) => {
                 const link = e.target.closest('a');
                 if (link && link.hash) {
@@ -401,32 +492,33 @@
 
             window.addEventListener('popstate', () => switchTab(window.location.hash));
 
-            // ===== AI 企劃產生器 (融合版) =====
+            // ===== AI Prompt Generator Logic =====
             const agentGenerateBtn = document.getElementById('agent-generate-btn');
-            const generateBtnText = document.getElementById('generate-btn-text');
-            const processDisplay = document.getElementById('agent-process-display');
-            const stepsContainer = document.getElementById('agent-steps-container');
-            const finalOutputContainer = document.getElementById('agent-final-output');
-            const outputPlaceholder = document.getElementById('output-placeholder');
-            const masterPromptOutput = document.getElementById('master-prompt-output');
-            const copyMasterPromptBtn = document.getElementById('copy-master-prompt-btn');
-            const copyBtnText = document.getElementById('copy-btn-text');
-            const topicInput = document.getElementById('agent-topic');
+            if(agentGenerateBtn) {
+                const generateBtnText = document.getElementById('generate-btn-text');
+                const processDisplay = document.getElementById('agent-process-display');
+                const stepsContainer = document.getElementById('agent-steps-container');
+                const finalOutputContainer = document.getElementById('agent-final-output');
+                const outputPlaceholder = document.getElementById('output-placeholder');
+                const masterPromptOutput = document.getElementById('master-prompt-output');
+                const copyMasterPromptBtn = document.getElementById('copy-master-prompt-btn');
+                const copyBtnText = document.getElementById('copy-btn-text');
+                const topicInput = document.getElementById('agent-topic');
 
-            const agentStepConfig = [
-                { id: 1, name: '資料蒐集 Agent', duration: 500, classes: { text: 'text-blue-800', bg: 'bg-blue-500' } },
-                { id: 2, name: 'Content Agent',  duration: 600, classes: { text: 'text-purple-800', bg: 'bg-purple-500' } },
-                { id: 3, name: 'Design Agent',   duration: 500, classes: { text: 'text-pink-800', bg: 'bg-pink-500' } },
-                { id: 4, name: 'QA Agent',       duration: 400, classes: { text: 'text-green-800', bg: 'bg-green-500' } }
-            ];
+                const agentStepConfig = [
+                    { id: 1, name: '資料蒐集 Agent', duration: 500, classes: { text: 'text-blue-800', bg: 'bg-blue-500' } },
+                    { id: 2, name: 'Content Agent',  duration: 600, classes: { text: 'text-purple-800', bg: 'bg-purple-500' } },
+                    { id: 3, name: 'Design Agent',   duration: 500, classes: { text: 'text-pink-800', bg: 'bg-pink-500' } },
+                    { id: 4, name: 'QA Agent',       duration: 400, classes: { text: 'text-green-800', bg: 'bg-green-500' } }
+                ];
 
-            function generateMasterPrompt(params) {
-                let sourceText = params.sourceType;
-                if (params.sourceType !== '無' && params.sourceDetail) {
-                    sourceText += `: ${params.sourceDetail}`;
-                }
+                function generateMasterPrompt(params) {
+                    let sourceText = params.sourceType;
+                    if (params.sourceType !== '無' && params.sourceDetail) {
+                        sourceText += `: ${params.sourceDetail}`;
+                    }
 
-                return `# [必殺指令] 多代理人簡報企劃 Prompt
+                    return `# [必殺指令] 多代理人簡報企劃 Prompt
 
 ## 🎯 總目標
 為主題「**${params.topic}**」生成一份專業、完整、且可用性高的簡報企劃書。
@@ -483,97 +575,234 @@
 - **圖表驗證：** 確認圖表建議與數據相符，避免 AI 簡報工具生成錯誤比例。
 - **一致性檢查：** 確保整體風格、語氣、敘事結構符合核心參數設定。
 - **優化建議：** 提出 2–3 個優化方向（例如：是否需要额外的註解文字、是否應合併圖表以減少頁數）。`;
-            }
-            
-            const startAgentWorkflow = async () => {
-                const getVal = id => document.getElementById(id).value;
-                const params = {
-                    topic: getVal('agent-topic').trim(),
-                    audience: getVal('agent-audience').trim(),
-                    context: getVal('agent-context'),
-                    narrative: getVal('agent-narrative'),
-                    length: getVal('agent-length'),
-                    tone: getVal('agent-tone'),
-                    sourceType: getVal('agent-source-type'),
-                    sourceDetail: getVal('agent-source-detail').trim()
+                }
+                
+                const startAgentWorkflow = async () => {
+                    const getVal = id => document.getElementById(id).value;
+                    const params = {
+                        topic: getVal('agent-topic').trim(),
+                        audience: getVal('agent-audience').trim(),
+                        context: getVal('agent-context'),
+                        narrative: getVal('agent-narrative'),
+                        length: getVal('agent-length'),
+                        tone: getVal('agent-tone'),
+                        sourceType: getVal('agent-source-type'),
+                        sourceDetail: getVal('agent-source-detail').trim()
+                    };
+
+                    if (params.topic === '') {
+                        topicInput.classList.add('border-red-500', 'placeholder-red-400');
+                        topicInput.placeholder = "請務必輸入簡報主題！";
+                        setTimeout(() => {
+                           topicInput.classList.remove('border-red-500', 'placeholder-red-400');
+                           topicInput.placeholder = "例如：導入 AI 輔助診斷系統";
+                        }, 3000);
+                        return;
+                    }
+                    
+                    agentGenerateBtn.disabled = true;
+                    generateBtnText.textContent = '產生中...';
+                    outputPlaceholder.classList.add('hidden');
+                    finalOutputContainer.classList.add('hidden');
+                    processDisplay.classList.remove('hidden');
+                    stepsContainer.innerHTML = '<p class="text-center font-semibold">正在模擬 Agent 團隊思考過程...</p>';
+
+                    for (const step of agentStepConfig) {
+                        const stepEl = document.createElement('div');
+                        stepEl.innerHTML = `
+                            <div class="flex items-center gap-4">
+                                <div class="status-dot w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-white font-bold text-lg flex-shrink-0">${step.id}</div>
+                                <div class="status-text text-gray-500 font-medium">${step.name}：等待執行</div>
+                            </div>`;
+                        stepsContainer.appendChild(stepEl);
+
+                        const dot = stepEl.querySelector('.status-dot');
+                        const text = stepEl.querySelector('.status-text');
+                        
+                        text.textContent = `${step.name} (思考中...)`;
+                        text.className = `status-text font-medium ${step.classes.text}`;
+                        dot.innerHTML = `<svg class="animate-spin-slow w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>`;
+                        dot.classList.remove('bg-gray-300');
+                        dot.classList.add(step.classes.bg);
+                        
+                        await new Promise(resolve => setTimeout(resolve, step.duration));
+                        
+                        dot.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-white"><path d="M20 6 9 17l-5-5"></path></svg>`;
+                        text.textContent = `${step.name}：完成`;
+                    }
+                    
+                    const masterPrompt = generateMasterPrompt(params);
+                    masterPromptOutput.textContent = masterPrompt;
+                    processDisplay.classList.add('hidden');
+                    finalOutputContainer.classList.remove('hidden');
+
+                    agentGenerateBtn.disabled = false;
+                    generateBtnText.textContent = '重新啟動 Agent 團隊';
                 };
 
-                if (params.topic === '') {
-                    topicInput.classList.add('border-red-500', 'placeholder-red-400');
-                    topicInput.placeholder = "請務必輸入簡報主題！";
+                agentGenerateBtn.addEventListener('click', startAgentWorkflow);
+
+                copyMasterPromptBtn.addEventListener('click', () => {
+                    const textToCopy = masterPromptOutput.textContent;
+                    const textarea = document.createElement('textarea');
+                    textarea.value = textToCopy;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    try {
+                        document.execCommand('copy');
+                        copyBtnText.textContent = '已複製！';
+                    } catch (err) {
+                        copyBtnText.textContent = '複製失敗';
+                        console.error('Copy failed', err);
+                    }
+                    document.body.removeChild(textarea);
+
                     setTimeout(() => {
-                       topicInput.classList.remove('border-red-500', 'placeholder-red-400');
-                       topicInput.placeholder = "例如：導入 AI 輔助診斷系統";
-                    }, 3000);
-                    return;
-                }
-                
-                // --- UI Reset and Setup ---
-                agentGenerateBtn.disabled = true;
-                generateBtnText.textContent = '產生中...';
-                outputPlaceholder.classList.add('hidden');
-                finalOutputContainer.classList.add('hidden');
-                processDisplay.classList.remove('hidden');
-                stepsContainer.innerHTML = '<p class="text-center font-semibold">正在模擬 Agent 團隊思考過程...</p>'; // Clear previous steps
+                        copyBtnText.textContent = '複製這份 Prompt';
+                    }, 2000);
+                });
+            }
 
-                // --- Run Simulation ---
-                for (const step of agentStepConfig) {
-                    const stepEl = document.createElement('div');
-                    stepEl.innerHTML = `
-                        <div class="flex items-center gap-4">
-                            <div class="status-dot w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-white font-bold text-lg flex-shrink-0">${step.id}</div>
-                            <div class="status-text text-gray-500 font-medium">${step.name}：等待執行</div>
-                        </div>`;
-                    stepsContainer.appendChild(stepEl);
 
-                    const dot = stepEl.querySelector('.status-dot');
-                    const text = stepEl.querySelector('.status-text');
-                    
-                    text.textContent = `${step.name} (思考中...)`;
-                    text.className = `status-text font-medium ${step.classes.text}`;
-                    dot.innerHTML = `<svg class="animate-spin-slow w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>`;
-                    dot.classList.remove('bg-gray-300');
-                    dot.classList.add(step.classes.bg);
-                    
-                    await new Promise(resolve => setTimeout(resolve, step.duration));
-                    
-                    dot.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-white"><path d="M20 6 9 17l-5-5"></path></svg>`;
-                    text.textContent = `${step.name}：完成`;
-                }
-                
-                // --- Display Final Output ---
-                const masterPrompt = generateMasterPrompt(params);
-                masterPromptOutput.textContent = masterPrompt;
-                processDisplay.classList.add('hidden');
-                finalOutputContainer.classList.remove('hidden');
+            // ===== Prompt Guide Logic =====
+            const failureData = [
+                { title: '模糊與歧義', icon: '❓', content: '這是最常見的缺陷。諸如「寫一個故事」之類的提示詞過於籠統，AI 只能猜測你的意圖，導致結果通用或完全錯誤。', example: '例如：「解理的重要性是什麼？」可能得到礦物學或時尚的答案。' },
+                { title: '缺乏上下文', icon: '📚', content: '提示詞錯誤地假設 AI 擁有未言明的背景知識。AI 完全依賴於你提供的資訊來生成相關內容。', example: '例如：「制定一個行銷計畫」卻沒有指明產品、預算或目標受眾。' },
+                { title: '負面框架', icon: '🚫', content: '指示模型「不要」做什麼的指令，通常不如正面、指導性的指令有效。負面指令更容易被誤解或忽略。', example: '「不要使用術語」的效果不如「請用簡單易懂的語言解釋」。' },
+                { title: '單一提示詞過載', icon: '🤯', content: '在一個提示詞中要求模型執行多個截然不同的認知任務，可能會導致答案不完整或雜亂無章。', example: '例如：同時要求「總結這篇文章、翻譯成法文並寫一首詩」。' },
+                { title: '不精確的描述', icon: '🎯', content: '使用模糊的詞語，其效果遠不如使用精確的約束。具體性可以減少歧義。', example: '「內容要相當簡短」不如「使用3到5個句子來描述」。' },
+                { title: '假設知識', icon: '�', content: '不要假設模型知道特定的縮寫、內部專案名稱或個人偏好。所有相關資訊都應明確提供。', example: '「幫我規劃CR-Project的下一步」是無效的，除非先解釋CR-Project是什麼。' }
+            ];
 
-                agentGenerateBtn.disabled = false;
-                generateBtnText.textContent = '重新啟動 Agent 團隊';
+            const failureContainer = document.getElementById('failure-cards-container');
+            if (failureContainer) {
+                failureData.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow cursor-pointer';
+                    card.innerHTML = `
+                        <div class="flex items-center mb-3">
+                            <span class="text-3xl mr-4">${item.icon}</span>
+                            <h3 class="text-xl font-semibold text-[#3d405b]">${item.title}</h3>
+                        </div>
+                        <div class="details hidden">
+                            <p class="text-gray-600">${item.content}</p>
+                            <p class="mt-2 text-sm text-[#e07a5f] bg-red-50 p-2 rounded">${item.example}</p>
+                        </div>
+                    `;
+                    failureContainer.appendChild(card);
+                    card.addEventListener('click', () => {
+                        card.querySelector('.details').classList.toggle('hidden');
+                    });
+                });
+            }
+
+            const raftData = {
+                R: { name: 'Role (角色)', icon: '🧑‍🏫', description: '賦予AI一個角色或視角，這能控制回應的語氣、風格和知識深度。', example: '<strong>扮演一位資深市場分析師</strong>，你需要根據我提供的數據，撰寫一份給公司高層的市場趨勢報告。'},
+                A: { name: 'Action (行動)', icon: '⚙️', description: '清晰地定義最終目的，使用明確的指令性動詞。', example: '扮演一位資深市場分析師，你需要<strong>分析這份季度銷售數據，並識別出三個最主要的成長驅動因素</strong>。'},
+                F: { name: 'Format (格式)', icon: '📄', description: '明確指定期望的輸出格式，如列表、JSON或表格。', example: '...請<strong>以三個項目符號列表的形式呈現你的分析結果，每個項目符號後附上一句不超過20字的簡要說明</strong>。'},
+                T: { name: 'Tone (語氣)', icon: '🎭', description: '指定輸出的語氣和風格，以符合目標受眾。', example: '...你的報告<strong>語氣應正式、客觀，並以數據為基礎，避免使用口語或推測性語言</strong>。'}
+            };
+            
+            const raftContainer = document.getElementById('raft-cards-container');
+            const raftDisplay = document.getElementById('raft-example-display');
+
+            if (raftContainer) {
+                Object.entries(raftData).forEach(([key, value]) => {
+                    const card = document.createElement('div');
+                    card.className = 'raft-card bg-white p-4 rounded-lg shadow-md hover:shadow-xl transition-all cursor-pointer border-2 border-transparent';
+                    card.dataset.raft = key;
+                    card.innerHTML = `<div class="text-2xl mb-2">${value.icon}</div><h3 class="font-semibold text-[#3d405b]">${value.name}</h3>`;
+                    raftContainer.appendChild(card);
+
+                    card.addEventListener('click', () => {
+                        document.querySelectorAll('.raft-card').forEach(c => c.classList.remove('active'));
+                        card.classList.add('active');
+                        
+                        raftDisplay.innerHTML = `
+                            <h3 class="text-xl font-bold mb-3">${value.name}</h3>
+                            <p class="text-gray-600 mb-4">${value.description}</p>
+                            <div class="bg-gray-100 p-4 rounded-lg">
+                                <p class="text-sm font-semibold text-gray-800 mb-2">完整提示詞範例 (點擊元素以高亮):</p>
+                                <p class="text-sm text-gray-700 leading-relaxed font-mono">
+                                    <span class="${key === 'R' ? 'bg-yellow-200' : ''}"><strong>[角色]</strong> ${raftData.R.example}</span><br>
+                                    <span class="${key === 'A' ? 'bg-yellow-200' : ''}"><strong>[行動]</strong> ${raftData.A.example.replace('扮演一位資深市場分析師，你需要', '')}</span><br>
+                                    <span class="${key === 'F' ? 'bg-yellow-200' : ''}"><strong>[格式]</strong> ${raftData.F.example.replace('...請', '')}</span><br>
+                                    <span class="${key === 'T' ? 'bg-yellow-200' : ''}"><strong>[語氣]</strong> ${raftData.T.example.replace('...你的報告', '')}</span>
+                                </p>
+                            </div>`;
+                    });
+                });
+            }
+
+            const advancedTechniques = {
+                "上下文學習": { content: "在提示詞中提供範例，讓模型從中學習期望的模式。分為：<br>• <strong>零樣本 (Zero-Shot):</strong> 無範例，直接下指令。<br>• <strong>單樣本 (One-Shot):</strong> 提供一個範例來引導格式。<br>• <strong>少樣本 (Few-Shot):</strong> 提供多個範例來展示複雜模式。", example: "<strong>少樣本範例:</strong><br>翻譯: sea otter -> loutre de mer<br>翻譯: cheese -> fromage<br>翻譯: bread ->" },
+                "複雜推理": { content: "引導模型進行更深層次的思考。<br>• <strong>思維鏈 (Chain-of-Thought):</strong> 指示模型「一步一步思考」，在給出答案前先展示推理過程，能顯著提高邏輯任務的準確性。<br>• <strong>任務分解 (Prompt Chaining):</strong> 將複雜任務分解為一系列循序漸進的子提示詞，提高精確度和可控性。", example: "<strong>思維鏈範例:</strong><br>問題：一個慢跑者跑了10公里，休息了5分鐘，然後又跑了5公里。如果他的速度是每公里6分鐘，總共花了多少時間？<br>請一步一步思考後回答。" },
+                "輸出控制": { content: "對輸出進行精確的微調。<br>• <strong>角色扮演 (Role-Playing):</strong> 要求AI扮演特定角色，如「持懷疑態度的編輯」。<br>• <strong>輸出錨定 (Output Anchoring):</strong> 為AI的回應「開頭」，強制其遵循特定格式。<br>• <strong>結構化格式化:</strong> 使用XML標籤（如 &lt;text&gt;）來明確告知格式規則。", example: "<strong>輸出錨定範例:</strong><br>...請以JSON格式回傳產品資訊。<br>輸出：<br>{\"product_name\": \"" }
             };
 
-            agentGenerateBtn.addEventListener('click', startAgentWorkflow);
+            const tabsContainer = document.getElementById('tabs-container');
+            const tabContentContainer = document.getElementById('tab-content-container');
+            if (tabsContainer) {
+                let firstTab = true;
+                Object.keys(advancedTechniques).forEach(key => {
+                    const button = document.createElement('button');
+                    button.className = `tab-button text-sm font-medium text-center px-5 py-2.5 border-b-2 border-transparent rounded-t-lg hover:text-[#81b29a] hover:border-gray-300`;
+                    button.textContent = key;
+                    if (firstTab) button.classList.add('active');
+                    
+                    button.addEventListener('click', () => {
+                        document.querySelectorAll('#prompt-guide .tab-button').forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+                        updateTabContent(key);
+                    });
+                    tabsContainer.appendChild(button);
 
-            copyMasterPromptBtn.addEventListener('click', () => {
-                const textToCopy = masterPromptOutput.textContent;
-                const textarea = document.createElement('textarea');
-                textarea.value = textToCopy;
-                document.body.appendChild(textarea);
-                textarea.select();
-                try {
-                    document.execCommand('copy');
-                    copyBtnText.textContent = '已複製！';
-                } catch (err) {
-                    copyBtnText.textContent = '複製失敗';
-                    console.error('Copy failed', err);
-                }
-                document.body.removeChild(textarea);
+                    if (firstTab) {
+                        updateTabContent(key);
+                        firstTab = false;
+                    }
+                });
+            }
 
-                setTimeout(() => {
-                    copyBtnText.textContent = '複製這份 Prompt';
-                }, 2000);
-            });
+            function updateTabContent(key) {
+                const technique = advancedTechniques[key];
+                tabContentContainer.innerHTML = `
+                    <div class="p-6 bg-white rounded-lg shadow-inner border border-gray-100">
+                        <p class="text-gray-600 leading-relaxed">${technique.content}</p>
+                        <div class="mt-4 p-3 bg-gray-100 rounded">
+                            <p class="text-sm font-semibold text-gray-800">範例:</p>
+                            <p class="text-sm text-gray-700 mt-1 whitespace-pre-wrap font-mono">${technique.example}</p>
+                        </div>
+                    </div>`;
+            }
+            
+            const guideNavLinks = document.querySelectorAll('#prompt-guide .nav-link');
+            const guideSections = document.querySelectorAll('#prompt-guide main section');
 
-            // Set dynamic copyright year
+            const handleGuideScroll = () => {
+                let current = '';
+                guideSections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    // Check if the prompt-guide section is active before proceeding
+                    if (document.getElementById('prompt-guide').classList.contains('active')) {
+                       if (window.pageYOffset >= sectionTop - 70) { // Adjusted offset for sticky header
+                           current = section.getAttribute('id');
+                       }
+                    }
+                });
+
+                guideNavLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            };
+            
+            window.addEventListener('scroll', handleGuideScroll);
+
+
+            // ===== Footer Logic =====
             const setCopyright = () => {
                 const copyrightEl = document.getElementById('copyright-info');
                 if (copyrightEl) {
@@ -587,4 +816,3 @@
     </script>
 </body>
 </html>
-�
